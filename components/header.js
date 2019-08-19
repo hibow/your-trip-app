@@ -15,6 +15,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
+import Link from 'next/link';
+
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
@@ -77,6 +79,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const linkStyle = {
+  marginRight: 15
+}
+
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -97,6 +103,13 @@ export default function PrimarySearchAppBar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   }
+  function handlelogout() {
+    //change index page to landing page
+    console.log('log out!')
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  }
+
 
   function handleMobileMenuOpen(event) {
     setMobileMoreAnchorEl(event.currentTarget);
@@ -115,6 +128,11 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handlelogout}>
+        <Link href="/landing">
+        <a style={linkStyle}>Log out</a>
+        </Link>
+        </MenuItem>
     </Menu>
   );
 
@@ -161,7 +179,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" color='primary'>
         <Toolbar>
           <IconButton
             edge="start"

@@ -1,0 +1,38 @@
+{
+ "result": [
+   {
+   "position": {
+     "lat": 51.505541,
+     "lng": -0.075172
+   },
+   "title": "Tower Bridge",
+   "time": "1998-12-26",
+   "photos" : [
+     "https://images.unsplash.com/photo-1523540499309-18d7a30ddf76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=4350&q=80"
+   ],
+   "summary": "it is nice!"
+  },
+ {
+  "position": {
+    "lat": 48.858441,
+    "lng": 2.294492
+  },
+  "title": "Eiffel Tower",
+  "time": "2000-05-24",
+  "photos" : [
+    "https://images.unsplash.com/photo-1497197246330-b9cafd652212?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3150&q=80"
+  ],
+  "summary": "Beautiful trip"
+ },
+ { "position": {
+  "lat": 41.890222,
+  "lng": 12.492236
+},
+  "title": "Colosseum",
+  "time": "2005-08-01",
+  "photos" : [
+    "https://images.unsplash.com/photo-1519879110616-349b57f8cd11?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3150&q=80"
+  ],
+  "summary": "today, we got up early and prepared..."
+  }
+ ]}

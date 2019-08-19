@@ -2,25 +2,27 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import env from '../config';
 import Marker from './marker';
+import data from '../db/data';
 
 // const Marker = ({ text }) => <div>{text}</div>;
-const locations = [
-  {
-    lat: 53.807877,
-    lng: -1.554886,
-    text: '123'
-  },
-  {
-    lat: 51.502735,
-    lng: -0.150877,
-    text: '234'
-  },
-  {
-    lat: 52.507645,
-    lng: 13.390341,
-    text: 'Check point Charlie'
-  }
-]
+const locations = data;
+// [
+//   {
+//     lat: 53.807877,
+//     lng: -1.554886,
+//     text: '123'
+//   },
+//   {
+//     lat: 51.502735,
+//     lng: -0.150877,
+//     text: '234'
+//   },
+//   {
+//     lat: 52.507645,
+//     lng: 13.390341,
+//     text: 'Check point Charlie'
+//   }
+// ]
 
 class SimpleMap extends Component {
   static defaultProps = {
@@ -33,13 +35,13 @@ class SimpleMap extends Component {
   renderMarkers(map, maps, locations) {
     // console.log(locations)
     var markers = locations.map(function(location, i) {
-      console.log(location.text)
+      console.log(location.summary)
       return new maps.Marker({
-        position: location,
+        position: location.position,
         draggable: true,
         animation: maps.Animation.DROP,
         map,
-        title: location.text
+        title: location.title
         // label: labels[i % labels.length]
       });
     });
@@ -58,7 +60,7 @@ class SimpleMap extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '70vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: env.GOOGLE_API_KEY}}
           defaultCenter={this.props.center}

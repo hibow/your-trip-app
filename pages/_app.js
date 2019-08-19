@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../lib/theme';
-import Header from '../components/header';
+import Header from '../components/header1';
 import Footer from '../components/Footer'
 
 class MyApp extends App {
@@ -32,7 +32,7 @@ class MyApp extends App {
     return (
       <Container>
         <Head>
-          <title>MyTrip</title>
+          <title>Trip Tracker</title>
         </Head>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
