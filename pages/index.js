@@ -1,5 +1,6 @@
 import Map from '../components/map';
 import Listcard from '../components/listcard';
+import Greeting from '../components/greeting';
 // import List from '../components/list';
 import Timeline from '../components/timeline2';
 import Layout from '../components/layout';
@@ -51,7 +52,7 @@ export default function Main() {
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs>
-          <Paper className={classes.paper}>
+          <Paper className={classes.paper} style={{background:"#f5f5f5"}}>
             <Timeline />
           </Paper>
         </Grid>

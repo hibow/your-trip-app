@@ -8,8 +8,11 @@ import Button from '@material-ui/core/Button';
 import Link from 'next/link';
 const linkStyle = {
   marginRight: 15,
+  fontSize:15,
+  fontWeight: 500,
   textDecoration: 'none',
-  color: 'white'
+  color: 'white',
+  textTransform: 'none'
 }
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,19 +60,31 @@ export default function Landing() {
   justify="center"
   style={{ minHeight: '100vh' }}
   >
-       <Typography component="h1" variant="h5">
-    We are here to accompolish your dreams with you.
+    <Typography component="h5" variant="subtitle1" style={{fontSize:"25px"}}>
+    "Take only memories, leave only footprints." - Cheif Seattle
+    </Typography>
+    <p>
+      {'\n'}
+    </p>
+       <Typography component="h1" variant="h4">
+
+    We are here to create more valuable memories with you.
    </Typography>
+   <p>
+      {'\n'}
+    </p>
+    <Link href="/">
+    <a style={linkStyle}>
  <Button
               type="submit"
               variant="contained"
               color="primary"
               className={classes.submit}
             >
-          <Link href="/">
-          <a style={linkStyle}>Get Started!</a>
-           </Link>
+         Join In
             </Button>
+            </a>
+    </Link>
    </Grid>
    </div>
    </Grid>

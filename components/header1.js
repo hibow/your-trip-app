@@ -6,8 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-
+import theme from '../lib/theme'
 import Link from 'next/link';
+import { borderLeft } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,16 +16,20 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    color: theme.palette.primary.second
   },
   title: {
     flexGrow: 1,
+    fontWeight: 450,
+    textShadow: '1px',
+    color: theme.palette.primary.second
   },
 }));
 
 const linkStyle = {
   marginRight: 15,
   textDecoration: 'none',
-  color: 'white'
+  color: theme.palette.primary.second
 }
 
 export default function ButtonAppBar() {
@@ -47,7 +52,7 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h4" className={classes.title}>
-            Trip Tracker
+            iFootPrint
           </Typography>
           {(!toggle)?
           <Button color="inherit" onClick={handleclick}>

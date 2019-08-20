@@ -55,7 +55,7 @@ export default class Timeline extends React.Component {
 
   render() {
     const {curIdx, prevIdx} = this.state;
-    const curStatus = data[curIdx].country + ' ' + data[curIdx].city;
+    const curStatus = data[curIdx].city + ', ' + data[curIdx].country;
     const curTitle = data[curIdx].title;
     const curSum = data[curIdx].summary;
     // const prevStatus = prevIdx >= 0 ? data[prevIdx].statusB : '';
@@ -63,6 +63,9 @@ export default class Timeline extends React.Component {
     return (
       <div>
         {/* Bounding box for the Timeline */}
+<p>
+{'\n'}
+</p>
         <div
           style={{
             width: "100%",

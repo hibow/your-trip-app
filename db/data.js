@@ -49,7 +49,7 @@ const data = [
    continent: "Europe",
    country: 'Italy',
    city: 'Rome',
-   time: "2005-08-01",
+   time: "2003-08-01",
    photos : [
      "https://images.unsplash.com/photo-1519879110616-349b57f8cd11?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3150&q=80"
    ],
@@ -65,7 +65,7 @@ const data = [
     continent: "North America",
     country: 'United State',
     city: 'District of Columbia',
-    time: "2015-07-04",
+    time: "2004-07-04",
     photos : [
       "https://images.unsplash.com/photo-1485394595691-5411947d63a4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2268&q=80"
     ],
@@ -81,11 +81,43 @@ const data = [
     continent: "North America",
     country: 'Egypt',
     city: 'Giza Governorate',
-    time: "2018-03-04",
+    time: "2005-03-04",
     photos : [
       "https://images.unsplash.com/photo-1564554860010-304d58f6edb1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1852&q=80"
     ],
     summary: "This is the greatest adventure!!"
+   },
+   {
+    locid:6,
+    position: {
+    lat: 43.789905,
+    lng: -110.681165
+    },
+    title: "Grand Teton National Park",
+    continent: "North America",
+    country: 'United States',
+    city: 'Wyoming',
+    time: "2008-06-04",
+    photos : [
+      "https://images.unsplash.com/photo-1464731702276-ca042cfee339?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3155&q=80"
+    ],
+    summary: "Great hiking, staff, biking, and nearby Jackson is a great little town."
+   },
+   {
+    locid:7,
+    position: {
+    lat: 10.772533,
+    lng: 106.698043
+    },
+    title: "Ben Thanh Market",
+    continent: "Asia",
+    country: 'Vietnam',
+    city: 'Ho Chi Minh City',
+    time: "2010-09-24",
+    photos : [
+      "https://images.unsplash.com/photo-1552590854-5b55d5425066?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1264&q=80"
+    ],
+    summary: "Is a good place to buy souvenirs for tourist. Consider to visit the night market which is just outside the market. Night market will start about 7pm. Remember to bargain the price."
    },
 ];
 
