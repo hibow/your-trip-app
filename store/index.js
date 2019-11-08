@@ -9,7 +9,7 @@ const init = {
    loaded: false  //current auth
  };
 //export error for export const init
-const initStore = (initState = init) => {
+const initStore = initState => {
   return createStore(
     rootReducer ,
     initState,

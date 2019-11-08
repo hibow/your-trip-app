@@ -7,3 +7,5 @@
     //display all the data + pictures
       //pictures (one picture enlarge in the future?)
     //for others adding comment (future)
+
+

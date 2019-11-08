@@ -10,6 +10,13 @@
   //swith picture by arrow clicking
   //CRUD button
   //submit form and cancel button
+//second -> hookup firebase
+//delete users -> change to posts collection
+  //hook up authentication and create users collection
+  //make CRUD work
+//make map work
+//don't implement dashboard
+//make it online
 export default function Item() {
   return (
    <div>

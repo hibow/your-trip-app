@@ -47,7 +47,7 @@ const Main = (props) => {
         <Grid item xs = {5}>
           <Paper className={classes.paper} >
             {/* <div style={{background: 'blue'}}> */}
-            <Listcard data = {props.state} />
+            <Listcard data = {props.footprints} />
             {/* </div> */}
           </Paper>
         </Grid>
@@ -69,7 +69,7 @@ const Main = (props) => {
  };
 
 const mapStateToProps = state => ({
- state : state
+ ...state
 });
 const mapDispatchToProps = dispatch => {
   return {
