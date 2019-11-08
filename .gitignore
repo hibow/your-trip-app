@@ -86,3 +86,6 @@ config.js
 
 # DynamoDB Local files
 .dynamodb/
+
+
+firebase/index.js

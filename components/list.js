@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     display: 'flex',
+    flexWrap: 'nowrap',
     width: '80vh',
     backgroundColor: theme.palette.card.main
   },
@@ -44,7 +45,7 @@ export default function Triplist() {
        <List className={classes.root}>
         {data.map(post => (
               <ListItem alignItems="flex-start">
-              <Grid item key={post.title}>
+              <Grid item key={post.title} >
                 <CardActionArea component="a" href="#">
                   <Card className={classes.card} >
                   <Hidden xsDown>

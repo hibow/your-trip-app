@@ -1,49 +1,46 @@
 import React from 'react';
+import {Provider} from 'react-redux';
+import withRedux from "next-redux-wrapper";
+import initStore from "../store/index";
+
 import App, { Container } from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../lib/theme';
-import Header from '../components/header1';
-import Footer from '../components/Footer'
+import Layout from '../components/layout'
+import Header from '../components/header';
+import Footer from '../components/Footer';
+
+
 
 class MyApp extends App {
 
-  static async getInitialProps({ Component, ctx }) {
-    const pageProps = {};
-
-    if (Component.getInitialProps) {
-      Object.assign(pageProps, await Component.getInitialProps(ctx));
-    }
-
-    return { pageProps };
+  static async getInitialProps({ Component, ctx}) {
+    return {
+      pageProps: Component.getInitialProps ? await Component.getInitialProps(ctx): {}
+    };
   }
-  componentDidMount() {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles.parentNode.removeChild(jssStyles);
-    }
-  }
-
   render() {
-    const { Component, pageProps } = this.props;
-
+    const { Component, pageProps, store } = this.props;
     return (
       <Container>
         <Head>
-          <title>iFootPrint</title>
+          <title>MyFootPrint</title>
         </Head>
         <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
+        <Provider store={store}>
           <Header {...pageProps} />
+          <Layout>
           <Component {...pageProps} />
+          </Layout>
           <Footer {...pageProps}/>
+        </Provider>
         </ThemeProvider>
       </Container>
     );
   }
 }
 
-export default MyApp;
+export default withRedux(initStore)(MyApp);

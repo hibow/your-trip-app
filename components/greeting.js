@@ -1,3 +1,4 @@
+//change position to the top
 import Typography from '@material-ui/core/Typography';
 
 export default function Greeting (){

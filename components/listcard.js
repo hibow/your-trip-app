@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
   },
 }));
-export default function Listcard() {
+export default function Listcard({data}) {
+  console.log('what is data?', data);
   // static propTypes = {
   //   url: PropTypes.string.isRequired,
   //   author: PropTypes.string.isRequired,
@@ -26,10 +27,10 @@ export default function Listcard() {
       <div style={{ height: '70vh'}}>
 <Grid
   container
-  spacing={0}
+  spacing={2}
   direction="column"
   alignItems='flex-start'
-  direction = 'row'
+  // direction = 'column'
   justify='space-between'
   >
       <Greeting/>

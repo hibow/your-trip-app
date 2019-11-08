@@ -1,3 +1,4 @@
+//map box : need resize -> later work
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import env from '../config';
@@ -61,21 +62,21 @@ class SimpleMap extends Component {
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '70vh', width: '100%' }}>
-        <GoogleMapReact
+        {/* <GoogleMapReact
           bootstrapURLKeys={{ key: env.GOOGLE_API_KEY}}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           onGoogleApiLoaded={({map, maps}) => {
             this.renderMarkers(map, maps, locations);
-          }}
-        >
+          }} */}
+        {/* > */}
 
           <Marker
             lat={51.502735}
             lng={-0.150877}
             // text="My Marker"
           />
-        </GoogleMapReact>
+        {/* </GoogleMapReact> */}
       </div>
     );
   }
