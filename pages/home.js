@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
+
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: 20,
@@ -39,12 +40,12 @@ const Main = (props) => {
 
      <div className={classes.root}>
       <Grid container spacing={2}>
-        <Grid item xs>
+        <Grid item md>
           <Paper className={classes.paper}>
             <Map data = {footprints}/>
           </Paper>
         </Grid>
-        <Grid item xs = {5}>
+        <Grid item md = {5}>
           <Paper className={classes.paper} >
             {/* <div style={{background: 'blue'}}> */}
             <Listcard data = {props.footprints} />
@@ -52,13 +53,13 @@ const Main = (props) => {
           </Paper>
         </Grid>
       </Grid>
-      <Grid container spacing={2}>
+      {/* <Grid container spacing={2}>
         <Grid item xs>
           <Paper className={classes.paper} style={{background:"#f5f5f5"}}>
             <Timeline data = {footprints}/>
           </Paper>
         </Grid>
-      </Grid>
+      </Grid> */}
     </div>
   );
  }

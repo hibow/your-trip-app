@@ -6,6 +6,8 @@
 // var momentString = momentObj.format('YYYY-MM-DD'); // 2016-07-15
 
 // console.log(momentString);
+
+
 const data = [
     {
     locid: 1,
@@ -19,7 +21,7 @@ const data = [
     city: "London",
     time: "1998-12-26",
     photos : [
-      "https://images.unsplash.com/photo-1523540499309-18d7a30ddf76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=4350&q=80"
+      "./static/towerbridge.png"
     ],
     summary: "it is nice!"
    },
@@ -35,7 +37,7 @@ const data = [
    city: 'Paris',
    time: "2000-05-24",
    photos : [
-     "https://images.unsplash.com/photo-1497197246330-b9cafd652212?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3150&q=80"
+     "./static/eiffeltower.png"
    ],
    summary: "Beautiful trip"
   },
@@ -51,7 +53,7 @@ const data = [
    city: 'Rome',
    time: "2003-08-01",
    photos : [
-     "https://images.unsplash.com/photo-1519879110616-349b57f8cd11?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3150&q=80"
+     "./static/colosseum.png"
    ],
    summary: "today, we got up early and prepared..."
   },
@@ -67,7 +69,7 @@ const data = [
     city: 'District of Columbia',
     time: "2004-07-04",
     photos : [
-      "https://images.unsplash.com/photo-1485394595691-5411947d63a4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2268&q=80"
+      "./static/whitehouse.png"
     ],
     summary: "Happy July Forth!!"
    },
@@ -83,7 +85,7 @@ const data = [
     city: 'Giza Governorate',
     time: "2005-03-04",
     photos : [
-      "https://images.unsplash.com/photo-1564554860010-304d58f6edb1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1852&q=80"
+      "./static/pyramid.png"
     ],
     summary: "This is the greatest adventure!!"
    },
@@ -99,7 +101,7 @@ const data = [
     city: 'Wyoming',
     time: "2008-06-04",
     photos : [
-      "https://images.unsplash.com/photo-1464731702276-ca042cfee339?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3155&q=80"
+      "./static/teton.png"
     ],
     summary: "Great hiking, staff, biking, and nearby Jackson is a great little town."
    },
@@ -115,7 +117,7 @@ const data = [
     city: 'Ho Chi Minh City',
     time: "2010-09-24",
     photos : [
-      "https://images.unsplash.com/photo-1552590854-5b55d5425066?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1264&q=80"
+      "./static/benthanh.png"
     ],
     summary: "Is a good place to buy souvenirs for tourist. Consider to visit the night market which is just outside the market. Night market will start about 7pm. Remember to bargain the price."
    },

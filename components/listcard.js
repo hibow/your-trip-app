@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import data from '../db/data';
+import ActBtn from './addmodal';
 
 const useStyles = makeStyles(theme => ({
   fab: {
@@ -24,7 +25,7 @@ export default function Listcard({data}) {
   // };
     const classes = useStyles();
     return (
-      <div style={{ height: '70vh'}}>
+      <div style={{ height: '80vh'}}>
 <Grid
   container
   spacing={2}
@@ -35,7 +36,7 @@ export default function Listcard({data}) {
   >
       <Greeting/>
       <Fab size = "small" color="primary" aria-label="add" className={classes.fab}>
-        <AddIcon />
+        <ActBtn/>
       </Fab>
       </Grid>
         <List/>

@@ -60,7 +60,7 @@ const Header=() => {
 {/* delete this button and change to navigation component  */}
           {(!toggle)?
           <Button color="inherit" onClick={handleclick}>
-          <Link href="/dashboard">
+          <Link href="/home">
           <a style={linkStyle}>LOGIN</a>
            </Link>
             </Button>:

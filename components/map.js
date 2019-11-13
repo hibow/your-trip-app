@@ -61,22 +61,23 @@ class SimpleMap extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '70vh', width: '100%' }}>
-        {/* <GoogleMapReact
+      <div style={{ height: '80vh', width: '100%' }}>
+        <GoogleMapReact
           bootstrapURLKeys={{ key: env.GOOGLE_API_KEY}}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
+          yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={({map, maps}) => {
             this.renderMarkers(map, maps, locations);
-          }} */}
-        {/* > */}
+          }}
+        />
 
-          <Marker
+           {/* <Marker
             lat={51.502735}
             lng={-0.150877}
             // text="My Marker"
-          />
-        {/* </GoogleMapReact> */}
+          /> */}
+         {/* </GoogleMapReact> */}
       </div>
     );
   }

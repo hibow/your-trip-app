@@ -9,14 +9,15 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Hidden from '@material-ui/core/Hidden';
-import Link from '@material-ui/core/Link';
-
+import IconButton from '@material-ui/core/IconButton';
+import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button'
+import EditIcon from '@material-ui/icons/Edit';
+import DelIcon from '@material-ui/icons/Delete';
 import data from '../db/data';
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    maxWidth: 480,
     backgroundColor: theme.palette.background.paper,
   },
   inline: {
@@ -28,15 +29,28 @@ const useStyles = makeStyles(theme => ({
   card: {
     display: 'flex',
     flexWrap: 'nowrap',
-    width: '80vh',
     backgroundColor: theme.palette.card.main
   },
   cardDetails: {
     flex: 1,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    width: '15vw',
+    marginRight: 10
   },
   cardMedia: {
-    width: 250,
+    width: '15vw',
   },
+  button: {
+    margin: theme.spacing(1),
+  },
+  icons: {
+    position:  'absolute',
+    right: '0px',
+    top: '0px',
+    display: 'flex',
+    flexDirection: 'column'
+  }
 }));
 
 export default function Triplist() {
@@ -44,7 +58,7 @@ export default function Triplist() {
   return (
        <List className={classes.root}>
         {data.map(post => (
-              <ListItem alignItems="flex-start">
+              <ListItem>
               <Grid item key={post.title} >
                 <CardActionArea component="a" href="#">
                   <Card className={classes.card} >
@@ -69,12 +83,21 @@ export default function Triplist() {
                         <Typography variant="subtitle1" color="primary">
                           Continue reading...
                         </Typography>
+                        <div>
+                        </div>
                       </CardContent>
                     </div>
-
                   </Card>
                 </CardActionArea>
               </Grid>
+              <div className = {classes.icons}>
+                <IconButton aria-label="edit" className={classes.margin}>
+              <EditIcon />
+              </IconButton>
+            <IconButton aria-label="delete" className={classes.margin}>
+              <DelIcon />
+              </IconButton>
+              </div>
               </ListItem>
             ))}
           </List>
