@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import footprintReducer from './fpsReducer';
+import {footprintReducer, editReducer, addReducer} from './fpsReducer';
 
 const rootReducer = combineReducers({
-footprints: footprintReducer
+footprints: footprintReducer,
+newFootPrint: editReducer,
+error: addReducer,
 });
 
 export default rootReducer;

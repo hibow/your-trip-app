@@ -14,7 +14,10 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button'
 import EditIcon from '@material-ui/icons/Edit';
 import DelIcon from '@material-ui/icons/Delete';
+import Item from './item'
 import data from '../db/data';
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -53,52 +56,62 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Triplist() {
+export default function FPlist() {
   const classes = useStyles();
+  const handleEdit = () => {
+    console.log('edit');
+    //open modal
+  }
+  const handleDelete = (evt) => {
+    console.log('delete', evt.target.value)
+    //delete id
+
+  }
   return (
        <List className={classes.root}>
-        {data.map(post => (
-              <ListItem>
-              <Grid item key={post.title} >
-                <CardActionArea component="a" href="#">
-                  <Card className={classes.card} >
-                  <Hidden xsDown>
-                      <CardMedia
-                        className={classes.cardMedia}
-                        image={post.photos[0]}
-                        title= "photo"
-                      />
-                    </Hidden>
-                    <div className={classes.cardDetails}>
-                      <CardContent>
-                        <Typography component="h2" variant="h5">
-                          {post.title}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                          {post.time}
-                        </Typography>
-                        <Typography variant="subtitle1" paragraph>
-                          {post.summary}
-                        </Typography>
-                        <Typography variant="subtitle1" color="primary">
-                          Continue reading...
-                        </Typography>
-                        <div>
-                        </div>
-                      </CardContent>
-                    </div>
-                  </Card>
-                </CardActionArea>
-              </Grid>
-              <div className = {classes.icons}>
-                <IconButton aria-label="edit" className={classes.margin}>
-              <EditIcon />
-              </IconButton>
-            <IconButton aria-label="delete" className={classes.margin}>
-              <DelIcon />
-              </IconButton>
-              </div>
-              </ListItem>
+        {data.map((post) => (
+          <Item post = {post} key = {post.title}></Item>
+            //   <ListItem key={post.title}>
+            //   <Grid item  >
+            //     <CardActionArea component="a" href="#">
+            //       <Card className={classes.card} >
+            //       <Hidden xsDown>
+            //           <CardMedia
+            //             className={classes.cardMedia}
+            //             image={post.photos[0]}
+            //             title= "photo"
+            //           />
+            //         </Hidden>
+            //         <div className={classes.cardDetails}>
+            //           <CardContent>
+            //             <Typography component="h2" variant="h5">
+            //               {post.title}
+            //             </Typography>
+            //             <Typography variant="subtitle1" color="textSecondary">
+            //               {post.time}
+            //             </Typography>
+            //             <Typography variant="subtitle1" paragraph>
+            //               {post.summary}
+            //             </Typography>
+            //             <Typography variant="subtitle1" color="primary">
+            //               Continue reading...
+            //             </Typography>
+            //             <div>
+            //             </div>
+            //           </CardContent>
+            //         </div>
+            //       </Card>
+            //     </CardActionArea>
+            //   </Grid>
+            //   <div className = {classes.icons}>
+            //     <IconButton aria-label="edit" type= "button" onClick = {handleEdit} className={classes.margin}>
+            //   <EditIcon />
+            //   </IconButton>
+            // <IconButton aria-label="delete" value = {post.title} type = "button" onClick = {handleDelete} className={classes.margin}>
+            //   <DelIcon />
+            //   </IconButton>
+            //   </div>
+            //   </ListItem>
             ))}
           </List>
   );

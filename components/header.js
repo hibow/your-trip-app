@@ -37,12 +37,12 @@ const Header=() => {
 
 
 //it might be able to delete those function, just let it do layout and pass stuff
-  const [toggle, setToggle ] = React.useState(false);
-  function handleclick(e) {
+  const [auth, setAuth ] = React.useState(false);
+  const handleclick=(e) => {
     //change index page to landing page
     console.log('click')
     const text = e.target.innerText;
-    setToggle(!toggle);
+
   }
 
 
@@ -51,19 +51,31 @@ const Header=() => {
     <div className={classes.root}>
       <AppBar position="fixed" color="primary">
         <Toolbar>
+          <Link href = "/home">
+            <a>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
+          </a>
+          </Link>
           <Typography variant="h4" className={classes.title}>
             iFootPrint
           </Typography>
 {/* delete this button and change to navigation component  */}
-          {(!toggle)?
+          {(!auth)?
+          <>
           <Button color="inherit" onClick={handleclick}>
-          <Link href="/home">
+          <Link href="/signin">
           <a style={linkStyle}>LOGIN</a>
            </Link>
-            </Button>:
+            </Button>
+          <Button color="inherit" onClick={handleclick}>
+          <Link href="/join">
+          <a style={linkStyle}>Join in</a>
+            </Link>
+            </Button>
+            </>
+            :
           <Button color="inherit" onClick={handleclick}>
           <Link href="/">
           <a style={linkStyle}>LOGOUT</a>

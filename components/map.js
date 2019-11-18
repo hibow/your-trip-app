@@ -1,11 +1,8 @@
-//map box : need resize -> later work
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import env from '../config';
-import Marker from './marker';
 import data from '../db/data';
 
-// const Marker = ({ text }) => <div>{text}</div>;
 const locations = data;
 // [
 //   {

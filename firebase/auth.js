@@ -1,7 +1,7 @@
 import firebase from './index';
 
 export const auth = firebase.auth();
-export const storage = firebase.storage();
+export const storageRef = firebase.storage().ref();
 
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const signInWithGoogle = () => auth.signInWithPopup(provider);

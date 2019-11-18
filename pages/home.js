@@ -1,7 +1,7 @@
 //layout and redux
 import {connect} from "react-redux";
-import {fetchFootPrints, addFootPrints} from '../action/FPAction'
-
+import {fetchFootPrints} from '../action/FPAction'
+import 'regenerator-runtime/runtime';
 import Map from '../components/map';
 import Listcard from '../components/listcard';
 import Timeline from '../components/timeline2';
