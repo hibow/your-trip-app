@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -13,20 +14,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import DelIcon from '@material-ui/icons/Delete';
 import Link from 'next/link';
 import AddMdl from './modal';
-
-
+import {selectFootPrint, deleteFootPrint} from '../action/FPAction';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-  inline: {
-    display: 'inline',
-  },
-  mainGrid: {
-    marginTop: theme.spacing(0),
-  },
   card: {
     display: 'flex',
     flexWrap: 'nowrap',
@@ -36,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    width: '15vw',
+    width: '13vw',
     marginRight: 10
   },
   cardMedia: {
@@ -45,12 +36,13 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
   },
+  box: {
+    paddingTop: '20px',
+    overflow: 'auto'
+  },
   icons: {
-    position:  'absolute',
-    right: '0px',
-    top: '0px',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'row'
   }
 }));
 
@@ -58,35 +50,43 @@ const useStyles = makeStyles(theme => ({
 const Item = (props) => {
   const classes = useStyles();
 
-  const {post} = props;
-
+  const {currentFP, selectFP, post, delFP} = props;
+  ////just for mock data
+  const curFP = {...post};
+  // delete curFP.position;
+  // delete curFP.continent;
+  curFP.username = 'Charlene';
+  console.log('item:', curFP)
+ /////
   const [open, setOpen] = React.useState(false);
-  console.log(props)
-  const handleEdit = () => {
-    console.log('edit');
-    setOpen(true);
-    console.log(open);
+  const [FP, setFP] = React.useState(curFP);
 
+  const handleEdit = () => {
+    setOpen(true);
+    setFP(curFP)
   }
   const handleDelete = () => {
-    console.log('delete', props.post.title)
-    //delete id
+    delFP(post.id);
   }
   const handleClickClose = () => {
     setOpen(false);
-    console.log('close item', open)
+  }
+  const handleSelect = () => {
+    //send to currentFP state
+    selectFP(curFP);
   }
   return (
     <>
-    <ListItem >
-    <Grid item key = {post.title} >
+    <Box key = {post.title} spacing={0} className = {classes.box}>
+    <Grid item >
     <Link href="/fp/[id]" as={`/fp/${post.title}`}>
-      <CardActionArea component="a">
+      <CardActionArea
+      component="a" onClick = {handleSelect}>
         <Card className={classes.card}>
         <Hidden xsDown>
             <CardMedia
               className={classes.cardMedia}
-              image={post.photos[0]}
+              image={post.urls[0]}
               title= "photo"
             />
           </Hidden>
@@ -96,10 +96,10 @@ const Item = (props) => {
                 {post.title}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                {post.time}
+                {post.travelDate}
               </Typography>
               <Typography variant="subtitle1" paragraph>
-                {post.summary}
+                {post.des}
               </Typography>
               <Typography variant="subtitle1" color="primary">
                 Continue reading...
@@ -112,18 +112,25 @@ const Item = (props) => {
       </CardActionArea>
       </Link>
     </Grid>
-    <div className = {classes.icons}>
+    <Grid item  className = {classes.icons}>
       <IconButton aria-label="edit" type= "button" onClick = {handleEdit} className={classes.margin}>
     <EditIcon />
     </IconButton>
   <IconButton aria-label="delete" value = {post.title} type = "button" onClick = {handleDelete} className={classes.margin}>
     <DelIcon />
     </IconButton>
-    </div>
-    <AddMdl state= {open} changeClose = {handleClickClose}></AddMdl>
-    </ListItem>
+    </Grid>
+    </Box>
+    <AddMdl state= {open} changeClose = {handleClickClose} editProps = {FP}></AddMdl>
     </>
   )
 }
 
-export default Item;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    selectFP: fp => dispatch(selectFootPrint(fp)),
+    delFP: id => dispatch(deleteFootPrint(id)),
+  }
+};
+
+export default connect(state => state, mapDispatchToProps)(Item);

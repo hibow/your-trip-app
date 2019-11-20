@@ -1,8 +1,39 @@
 import React from 'react';
 import { signInWithGoogle } from '../firebase/auth';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 //to Do: send to fb for auth /google
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(3, 2),
+  },
+  signinForm: {
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column'
+    // flexWrap: 'wrap',
+  },
+  textDiv: {
+    textAlign: 'center'
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
+
 const SignIn = () => {
+
+  const classes = useStyles();
   const defaultState = {
     email: '',
     password: ''
@@ -11,9 +42,9 @@ const SignIn = () => {
   // const [password, setPassword] = React.useState('');
   const handleChange = evt => {
     const {name, value} = evt.target;
-    // console.log(name, value);
+    console.log(name, value);
     const cloneState = {...state, ...{[name]: value}};
-    // console.log(cloneState)
+    console.log(cloneState)
     setState(cloneState);
     // console.log(state);
   }
@@ -24,25 +55,41 @@ const SignIn = () => {
     setState(defaultState)
   }
   return (
-    <form className="SignIn" onSubmit={handleSubmit}>
-    <h2>Sign In</h2>
-    <input
-      type="email"
-      name="email"
-      placeholder="Email"
-      value={state.email}
-      onChange={handleChange}
-    />
-    <input
-      type="password"
-      name="password"
-      placeholder="Password"
-      value={state.password}
-      onChange={handleChange}
-    />
-    <input type="submit" value="Sign In" />
-    <button onClick={signInWithGoogle}>Sign In With Google</button>
+    <Container maxWidth="sm">
+        <Paper className={classes.root}>
+    <Typography variant="h4" component="div" className = {classes.textDiv}>
+      Sign In
+    </Typography>
+    <form className={classes.signinForm} onSubmit={handleSubmit}>
+    <TextField
+          id="email"
+          name="email"
+          className={classes.textField}
+          label="email"
+          margin="normal"
+          value={state.email}
+          onChange={handleChange}
+        />
+      <TextField
+        id="standard-password-input"
+        name="password"
+        label="password"
+        className={classes.textField}
+        type="password"
+        autoComplete="current-password"
+        margin="normal"
+        value={state.password}
+        onChange={handleChange}
+      />
+  <Button variant="outlined" type="submit" color="primary" className={classes.button}>
+    Sign In
+  </Button>
+  <Button variant="outlined" color="primary" className={classes.button} onClick={signInWithGoogle}>
+  Sign In With Google
+  </Button>
   </form>
+  </Paper>
+  </Container>
     )
   }
 

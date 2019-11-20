@@ -11,7 +11,7 @@ import Datepicker from './datepicker';
 import { makeStyles } from '@material-ui/core/styles';
 import {DropzoneArea} from 'material-ui-dropzone';
 import {addFootPrints, editFootPrint} from '../action/FPAction';
-import data from '../db/data';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -30,31 +30,52 @@ const useStyles = makeStyles(theme => ({
 const FormDialog = (props) => {
 
   const classes = useStyles();
-  const {state, changeClose} = props;
-  // const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState(data[0].time);
-  const [country, setCountry] = React.useState(data[0].country);
-  const [city, setCity] = React.useState(data[0].city);
-  const [place, setPlace] = React.useState(data[0].title);
-  const [des, setDes] = React.useState(data[0].summary);
-  const [url, setUrl] = React.useState(data[0].photos[0]);
-  const {newFootPrint, editFootPrint, addFootPrints} = props;
+  const {state, changeClose, addFP, currentFP, editProps, editFP} = props;
+
+  ///default add modal- move to store.js
+  let defaultProps = editProps;
+  if (!defaultProps) {
+    defaultProps = {
+      id: '',
+      username: 'Charlene',
+      travelDate: new Date().toString(),
+      title:'',
+      city: '',
+      country:'',
+      des:'',
+      urls:[]
+    };
+  }
+  ///
+  const [travelDate, setDate] = React.useState(defaultProps.travelDate);
+  const [country, setCountry] = React.useState(defaultProps.country);
+  const [city, setCity] = React.useState(defaultProps.city);
+  const [title, setTitle] = React.useState(defaultProps.title);
+  const [des, setDes] = React.useState(defaultProps.des);
+  const [urls, setUrls] = React.useState(defaultProps.urls);
+
+
   const handleClose = () => {
-    console.log('close', state)
     changeClose();
   };
+
   const handleSubmit =() => {
-    let fp = {...newFootPrint,...{place, date, url, des, country, city}};
-    editFootPrint(fp);
-    addFootPrints(fp);
-    // setOpen(false);
+    let id = editProps.id;
+    let fp = {...{username: 'Charlene'},...{id, title, travelDate, urls, des, country, city}};
+    if (editProps) {
+     editFP(fp);
+    } else {
+      addFP(fp);
+    }
     changeClose();
   }
   const handleSubmitDate = date => {
-    setDate(date);
+    //date from datepicker is always a timestamp object
+    let dateStr = date.toString()
+    setDate(dateStr);
   }
-  const changePlace = evt => {
-    setPlace(evt.target.value)
+  const changeTitle = evt => {
+    setTitle(evt.target.value)
   }
   const changeCtry = evt => {
     setCountry(evt.target.value)
@@ -62,8 +83,8 @@ const FormDialog = (props) => {
   const changeCity = evt => {
     setCity(evt.target.value)
   }
-  const changeUrl = evt => {
-    setUrl(evt.target.value)
+  const changeUrls = evt => {
+    setUrls([evt.target.value])
   }
   const changeDes = evt => {
     setDes(evt.target.value)
@@ -75,12 +96,12 @@ const FormDialog = (props) => {
         <DialogContent>
           <DialogContentText>
           </DialogContentText>
-          <Datepicker onSubmit = {handleSubmitDate} props = {data[0].time}> </Datepicker>
+          <Datepicker onSubmit = {handleSubmitDate} props = {travelDate}> </Datepicker>
           <TextField
-          id="place"
-          label="Place Name"
-          value = {place}
-          onChange = {changePlace}
+          id="title"
+          label="Title"
+          value = {title}
+          onChange = {changeTitle}
           style={{ margin: 8 }}
           placeholder="Tower Bridge"
           fullWidth
@@ -111,14 +132,14 @@ const FormDialog = (props) => {
           label="photo url"
           id="url"
           placeholder="url"
-          value = {url}
-          onChange = {changeUrl}
+          value = {urls}
+          onChange = {changeUrls}
           className={classes.textField}
           margin="dense"
         />
           <TextField
             margin="dense"
-            id="des"
+            id="description"
             label="Description"
             placeholder="This place is amazing!"
             value = {des}
@@ -148,8 +169,8 @@ const FormDialog = (props) => {
 // };
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFootPrint: fp => dispatch(editFootPrint(fp)),
-    addFootPrints: fp => dispatch(addFootPrints(fp))
+    editFP: fp => dispatch(editFootPrint(fp)),
+    addFP: fp => dispatch(addFootPrints(fp)),
   }
 };
 

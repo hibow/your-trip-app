@@ -10,7 +10,7 @@
 
 const data = [
     {
-    locid: 1,
+    id: 1,
     position: {
       lat: 51.505541,
       lng: -0.075172
@@ -19,30 +19,30 @@ const data = [
     continent: "Europe",
     country: "United Kingdom",
     city: "London",
-    time: "1998-12-26",
-    photos : [
+    travelDate: "1998-12-26",
+    urls : [
       "./static/towerbridge.png"
     ],
-    summary: "it is nice!"
+    des: "it is nice!"
    },
   {
-    locid:2,
+    id:2,
    position: {
      lat: 48.858441,
      lng: 2.294492
    },
    title: "Eiffel Tower",
    continent: "Europe",
-   country: 'Frence',
+   country: 'France',
    city: 'Paris',
-   time: "2000-05-24",
-   photos : [
+   travelDate: "2000-05-24",
+   urls : [
      "./static/eiffeltower.png"
    ],
-   summary: "Beautiful trip"
+   des: "Beautiful trip"
   },
   {
-   locid:3,
+   id:3,
    position: {
    lat: 41.890222,
    lng: 12.492236
@@ -51,30 +51,30 @@ const data = [
    continent: "Europe",
    country: 'Italy',
    city: 'Rome',
-   time: "2003-08-01",
-   photos : [
+   travelDate: "2003-08-01",
+   urls : [
      "./static/colosseum.png"
    ],
-   summary: "today, we got up early and prepared..."
+   des: "today, we got up early and prepared..."
   },
   {
-    locid:4,
+    id:4,
     position: {
     lat: 38.897710,
     lng: -77.036541
   },
     title: "The White House",
     continent: "North America",
-    country: 'United State',
+    country: 'United States',
     city: 'District of Columbia',
-    time: "2004-07-04",
-    photos : [
+    travelDate: "2004-07-04",
+    urls : [
       "./static/whitehouse.png"
     ],
-    summary: "Happy July Forth!!"
+    des: "Happy July Forth!!"
    },
    {
-    locid:5,
+    id:5,
     position: {
     lat: 29.979297,
     lng: 31.134186
@@ -83,14 +83,14 @@ const data = [
     continent: "North America",
     country: 'Egypt',
     city: 'Giza Governorate',
-    time: "2005-03-04",
-    photos : [
+    travelDate: "2005-03-04",
+    urls : [
       "./static/pyramid.png"
     ],
-    summary: "This is the greatest adventure!!"
+    des: "This is the greatest adventure!!"
    },
    {
-    locid:6,
+    id:6,
     position: {
     lat: 43.789905,
     lng: -110.681165
@@ -99,14 +99,14 @@ const data = [
     continent: "North America",
     country: 'United States',
     city: 'Wyoming',
-    time: "2008-06-04",
-    photos : [
+    travelDate: "2008-06-04",
+    urls : [
       "./static/teton.png"
     ],
-    summary: "Great hiking, staff, biking, and nearby Jackson is a great little town."
+    des: "Great hiking, staff, biking, and nearby Jackson is a great little town."
    },
    {
-    locid:7,
+    id:7,
     position: {
     lat: 10.772533,
     lng: 106.698043
@@ -115,11 +115,11 @@ const data = [
     continent: "Asia",
     country: 'Vietnam',
     city: 'Ho Chi Minh City',
-    time: "2010-09-24",
-    photos : [
+    travelDate: "2010-09-24",
+    urls : [
       "./static/benthanh.png"
     ],
-    summary: "Is a good place to buy souvenirs for tourist. Consider to visit the night market which is just outside the market. Night market will start about 7pm. Remember to bargain the price."
+    des: "Is a good place to buy souvenirs for tourist. Consider to visit the night market which is just outside the market. Night market will start about 7pm. Remember to bargain the price."
    },
 ];
 

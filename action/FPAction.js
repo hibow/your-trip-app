@@ -1,51 +1,78 @@
 import {fs} from '../firebase/index'; //firestore
-import {FETCH_FPS, ADD_FPS, EDIT_FPS} from './type';
+import {FETCH_FPS, ADD_FP, EDIT_FP, SELECT_FP, DEL_FP} from './type';
 import forwardGeo from '../lib/forwardGeo';
 import env from '../config';
-// const footprint = {
-//   date: new Date(),
-//   place:'',
-//   city: '',
-//   country:'',
-//   des:'',
-//   url:''
-// }
 
-export const editFootPrint = (footprint) => async dispatch => {
+export const selectFootPrint = (footprint) => async dispatch => {
   let newState = {
-    newFootPrint : {
+    currentFP : {
+      id: footprint.id,
       username: footprint.username,
-      place: footprint.place,
-      travelDate: footprint.date,
+      title: footprint.title,
+      travelDate: footprint.travelDate,
       country: footprint.country,
       city: footprint.city,
-      url: footprint.url,
+      urls: [footprint.urls],
       des: footprint.des
     }
   }
   dispatch({
-    type: EDIT_FPS,
-    newFootPrint: newState.newFootPrint
+    type: SELECT_FP,
+    currentFP: newState.currentFP
+  })
+}
+
+
+export const editFootPrint = (footprint) => async dispatch => {
+  const db = await fs;
+  let data = {
+      id: footprint.id,
+      username: footprint.username,
+      title: footprint.title,
+      travelDate: footprint.travelDate,
+      country: footprint.country,
+      city: footprint.city,
+      urls: footprint.urls,
+      des: footprint.des
+    }
+  let id = footprint.id;
+  await db.collection('footprints').doc(id).update(data)
+  .then(() => {
+    console.log('update success!')
+    dispatch({
+      type: EDIT_FP,
+      error: false
+    })
+    dispatch(fetchFootPrints());
+  })
+  .catch((err) => {
+    console.log('update failed!')
+    dispatch({
+      type: EDIT_FP,
+      error: true
+    })
+    dispatch(fetchFootPrints());
   })
 }
 
 export const addFootPrints = (footprint) => async dispatch => {
   const db = await fs;
-  //get [lat, lut]
-  footprint.geocode = await forwardGeo({q: `${footprint.title}, ${footprint.city}, ${footprint.country}`, key: env.OPENCAGE_API_KEY});
-  await console.log('current fps:', footprint)
+
+  footprint.position = await forwardGeo({q: `${footprint.title}, ${footprint.city}, ${footprint.country}`, key: env.OPENCAGE_API_KEY});
   await db.collection('footprints').add(footprint).then(ref => {
     console.log('Added document with ID: ', ref.id);
     dispatch({
-      type: ADD_FPS,
+      type: ADD_FP,
       error: false
     });
+    dispatch(fetchFootPrints());
   })
   .catch( err => {
     dispatch({
-      type: ADD_FPS,
+      type: ADD_FP,
       error: true
     });
+    dispatch(fetchFootPrints());
   })
 
 }
@@ -53,28 +80,26 @@ export const addFootPrints = (footprint) => async dispatch => {
 export const fetchFootPrints = (user) => async dispatch =>{
   const db = await fs;
   let newState = {
-    footprints : 'new'
+    footprints : []
   };
 
   let oldState = {
     footprints: 'err'
   }
-  // dispatch({
-  //   type: FETCH_FPS,
-  //   footprints: []
-  // })
-  await db.collection('users').get()
-    .then((snapshot) => {
-      snapshot.forEach((doc) => {
-        let fps = doc.data().footprints;
-        console.log(fps, 'done')
-        newState.footprints = fps;
-    });
+    await db.collection('footprints').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        let id = doc.id;
+        let fps = doc.data();
+        fps.id = id;
+        newState.footprints.push(fps);
+        console.log('fetch:',fps)
+      })
     dispatch({
       type: FETCH_FPS,
       footprints: newState.footprints
     });
-    })
+   })
     .catch( (err) => {
       dispatch({
         type:FETCH_FPS,
@@ -83,13 +108,24 @@ export const fetchFootPrints = (user) => async dispatch =>{
     })
 };
 
-//delete
-export const deleteFootPrint = footprint => async dispatch => {
+export const deleteFootPrint = id => async dispatch => {
   const db = await fs;
 
-  await db.collection('footprints').doc('DC').delete();
-  console
-  //fetch again
-
+  await db.collection('footprints').doc(id).delete()
+  .then( () => {
+    console.log('deleted!');
+    dispatch({
+      type: DEL_FP,
+      error: false
+    });
+    dispatch(fetchFootPrints());
+  })
+  .catch( (err) => {
+    console.log('delete failed!');
+    dispatch({
+      type: DEL_FP,
+      error: true
+    });
+    dispatch(fetchFootPrints());
+  })
 }
-//update = add

@@ -1,4 +1,3 @@
-//landing page: layout
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -44,7 +43,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function Landing() {
   const classes = useStyles();
-  //need to change toggle status
   return (
    <Grid container component="main" className={classes.root}>
    <Grid item xs={false} sm={4} md={7} className={classes.image} />

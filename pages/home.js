@@ -1,4 +1,3 @@
-//layout and redux
 import {connect} from "react-redux";
 import {fetchFootPrints} from '../action/FPAction'
 import 'regenerator-runtime/runtime';
@@ -23,6 +22,14 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
     // background: 'blue'
   },
+  listPaper : {
+    padding: theme.spacing(3),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    maxHeight: '100%',
+    overflow: 'auto',
+    maxWidth:  '50vw'
+  },
   section: {
     // height: '500px',
     paddingTop: 5,
@@ -32,10 +39,9 @@ const useStyles = makeStyles(theme => ({
 
 const Main = (props) => {
 
-  const {getFootPrints} = props;
+  const {footprints} = props;
   const classes = useStyles();
-  const footprints = [];
-  console.log(props)
+  // console.log(props)
     return (
 
      <div className={classes.root}>
@@ -45,11 +51,9 @@ const Main = (props) => {
             <Map data = {footprints}/>
           </Paper>
         </Grid>
-        <Grid item md = {5}>
-          <Paper className={classes.paper} >
-            {/* <div style={{background: 'blue'}}> */}
-            <Listcard data = {props.footprints} />
-            {/* </div> */}
+        <Grid item md = {4}>
+          <Paper className={classes.listPaper} >
+            <Listcard data = {footprints} />
           </Paper>
         </Grid>
       </Grid>
