@@ -1,11 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-//toDO: send auth to fb
+import {SetCurUser, GetUser, SignUpAction, createUserDocument, getUserDocument} from '../action/authAction';
+import Router from "next/router";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,11 +32,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const JOIN = () => {
+const JOIN = (props) => {
 
-    const classes = useStyles();
+  const classes = useStyles();
+  const {signUp, user} = props;
+  console.log('signup page: ', props)
   const defaultState = {
-    username: '',
+    displayName: '',
     email: '',
     password: ''
   }
@@ -48,11 +52,18 @@ const JOIN = () => {
     setState(cloneState);
     // console.log(state);
   }
-  const handleSubmit = evt => {
+  const handleSubmit = async evt => {
     evt.preventDefault();
     console.log('cur:',state);
-    //post back info
+    await signUp(state.email, state.displayName, state.password);
+    console.log('current sign up user:', user)
     //will change page?
+    // let uid  = await GetUser();
+    if (GetUser()|| user) {
+      console.log('leave!')
+      await Router.push('/home');
+    }
+    await console.log('stay!')
     // setState(defaultState)
   }
   return (
@@ -64,12 +75,12 @@ const JOIN = () => {
     <form className={classes.signupForm} onSubmit={handleSubmit}>
     <TextField
          type="text"
-          id="username-input"
-          name="username"
+          id="displayName-input"
+          name="displayName"
           className={classes.textField}
-          label="username"
+          label="displayName"
           margin="normal"
-          value={state.username}
+          value={state.displayName}
           onChange={handleChange}
         />
     <TextField
@@ -103,4 +114,12 @@ const JOIN = () => {
 
 }
 
-export default JOIN;
+// export default JOIN;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // selectFP: fp => dispatch(selectFootPrint(fp)),
+    signUp: (email, displayName, password) => dispatch(SignUpAction(email, displayName, password))
+  }
+};
+
+export default connect(state => state, mapDispatchToProps)(JOIN);

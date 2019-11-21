@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Link from 'next/link';
+import {GetUser} from '../action/authAction'
 const linkStyle = {
   marginRight: 15,
   fontSize:15,
@@ -69,7 +70,8 @@ export default function Landing() {
    <p>
       {'\n'}
     </p>
-    <Link href="/home">
+    {!GetUser() ?
+    <Link href="#">
     <a style={linkStyle}>
  <Button
               type="submit"
@@ -81,6 +83,19 @@ export default function Landing() {
             </Button>
             </a>
     </Link>
+    :    <Link href="/home">
+    <a style={linkStyle}>
+ <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+         Join In
+            </Button>
+            </a>
+    </Link>
+    }
    </Grid>
    </div>
    </Grid>

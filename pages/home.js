@@ -1,5 +1,6 @@
 import {connect} from "react-redux";
-import {fetchFootPrints} from '../action/FPAction'
+import {fetchFootPrints} from '../action/FPAction';
+import {GetUser} from '../action/authAction';
 import 'regenerator-runtime/runtime';
 import Map from '../components/map';
 import Listcard from '../components/listcard';
@@ -7,6 +8,8 @@ import Timeline from '../components/timeline2';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Router from "next/router";
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,7 +23,6 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     maxHeight: '100%',
     overflow: 'auto',
-    // background: 'blue'
   },
   listPaper : {
     padding: theme.spacing(3),
@@ -31,7 +33,6 @@ const useStyles = makeStyles(theme => ({
     maxWidth:  '50vw'
   },
   section: {
-    // height: '500px',
     paddingTop: 5,
     backgroundColor: 'E6EE9C'
   }
@@ -39,9 +40,14 @@ const useStyles = makeStyles(theme => ({
 
 const Main = (props) => {
 
-  const {footprints} = props;
+  const {user,footprints, loaded} = props;
+  console.log('user:',user, loaded)
+  ///entry point -> check authuser
+  if (!user) {
+    Router.push('/');
+  }
+
   const classes = useStyles();
-  // console.log(props)
     return (
 
      <div className={classes.root}>

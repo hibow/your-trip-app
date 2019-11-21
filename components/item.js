@@ -73,7 +73,9 @@ const Item = (props) => {
   }
   const handleSelect = () => {
     //send to currentFP state
+    console.log('click?')
     selectFP(curFP);
+    console.log(props)
   }
   return (
     <>
@@ -81,7 +83,9 @@ const Item = (props) => {
     <Grid item >
     <Link href="/fp/[id]" as={`/fp/${post.title}`}>
       <CardActionArea
-      component="a" onClick = {handleSelect}>
+      component="a"
+      onClick = {handleSelect}
+      >
         <Card className={classes.card}>
         <Hidden xsDown>
             <CardMedia

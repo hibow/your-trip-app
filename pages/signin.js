@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { signInWithGoogle } from '../firebase/auth';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,6 +7,9 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Router from "next/router";
+import {SetCurUser, SignInAction, GetUser, createUserDocument, getUserDocument} from '../action/authAction';
+
 //to Do: send to fb for auth /google
 
 const useStyles = makeStyles(theme => ({
@@ -31,28 +35,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const SignIn = () => {
+const SignIn = (props) => {
 
   const classes = useStyles();
+  const {signIn, user} = props;
+  console.log('signin page: ', props)
   const defaultState = {
     email: '',
     password: ''
   }
   const [state, setState] = React.useState(defaultState);
-  // const [password, setPassword] = React.useState('');
+
   const handleChange = evt => {
     const {name, value} = evt.target;
-    console.log(name, value);
     const cloneState = {...state, ...{[name]: value}};
-    console.log(cloneState)
     setState(cloneState);
-    // console.log(state);
   }
-  const handleSubmit = evt => {
+  const handleSubmit = async evt => {
     evt.preventDefault();
     console.log('cur:',state);
-    //post back info
-    setState(defaultState)
+
+    await signIn(state.email, state.password);
+    console.log('current user signin: ', user)
+    setState(defaultState);
+    //taking longer to verify user
+    if (GetUser()|| user) {
+      Router.push('/home');
+    }
+
   }
   return (
     <Container maxWidth="sm">
@@ -93,7 +103,10 @@ const SignIn = () => {
     )
   }
 
-export default SignIn;
-//redux
-//how to store sign in info?(make it like post query?) to get user info from db ?
-//maptodispatch and run it in render components
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signIn: (email, password) => dispatch(SignInAction(email, password)),
+  }
+};
+
+export default connect(state => state, mapDispatchToProps)(SignIn);
