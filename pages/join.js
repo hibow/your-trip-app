@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {SetCurUser, GetUser, SignUpAction, createUserDocument, getUserDocument} from '../action/authAction';
+import {GetUser, SignUpAction} from '../action/authAction';
 import Router from "next/router";
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
     padding: '20px',
     display: 'flex',
     flexDirection: 'column'
-    // flexWrap: 'wrap',
   },
   textDiv: {
     textAlign: 'center'
@@ -36,35 +35,21 @@ const JOIN = (props) => {
 
   const classes = useStyles();
   const {signUp, user} = props;
-  console.log('signup page: ', props)
   const defaultState = {
     displayName: '',
     email: '',
     password: ''
   }
   const [state, setState] = React.useState(defaultState);
-  // const [password, setPassword] = React.useState('');
   const handleChange = evt => {
     const {name, value} = evt.target;
-    // console.log(name, value);
     const cloneState = {...state, ...{[name]: value}};
-    // console.log(cloneState)
     setState(cloneState);
-    // console.log(state);
   }
   const handleSubmit = async evt => {
     evt.preventDefault();
-    console.log('cur:',state);
     await signUp(state.email, state.displayName, state.password);
-    console.log('current sign up user:', user)
-    //will change page?
-    // let uid  = await GetUser();
-    if (GetUser()|| user) {
-      console.log('leave!')
-      await Router.push('/home');
-    }
-    await console.log('stay!')
-    // setState(defaultState)
+    await GetUser(user, '/home');
   }
   return (
     <Container maxWidth="sm">
@@ -74,6 +59,7 @@ const JOIN = (props) => {
     </Typography>
     <form className={classes.signupForm} onSubmit={handleSubmit}>
     <TextField
+         required
          type="text"
           id="displayName-input"
           name="displayName"
@@ -114,10 +100,8 @@ const JOIN = (props) => {
 
 }
 
-// export default JOIN;
 const mapDispatchToProps = (dispatch) => {
   return {
-    // selectFP: fp => dispatch(selectFootPrint(fp)),
     signUp: (email, displayName, password) => dispatch(SignUpAction(email, displayName, password))
   }
 };

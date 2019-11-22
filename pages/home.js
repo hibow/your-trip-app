@@ -1,6 +1,5 @@
 import {connect} from "react-redux";
 import {fetchFootPrints} from '../action/FPAction';
-import {GetUser} from '../action/authAction';
 import 'regenerator-runtime/runtime';
 import Map from '../components/map';
 import Listcard from '../components/listcard';
@@ -41,8 +40,6 @@ const useStyles = makeStyles(theme => ({
 const Main = (props) => {
 
   const {user,footprints, loaded} = props;
-  console.log('user:',user, loaded)
-  ///entry point -> check authuser
   if (!user) {
     Router.push('/');
   }
@@ -59,7 +56,7 @@ const Main = (props) => {
         </Grid>
         <Grid item md = {4}>
           <Paper className={classes.listPaper} >
-            <Listcard data = {footprints} />
+            <Listcard footprints = {footprints} user= {user} />
           </Paper>
         </Grid>
       </Grid>

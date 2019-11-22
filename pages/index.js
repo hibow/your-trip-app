@@ -1,10 +1,11 @@
+import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Link from 'next/link';
-import {GetUser} from '../action/authAction'
+
 const linkStyle = {
   marginRight: 15,
   fontSize:15,
@@ -42,8 +43,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Landing() {
+export const Landing = (props) => {
   const classes = useStyles();
+  const {user} = props;
+
   return (
    <Grid container component="main" className={classes.root}>
    <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -70,8 +73,8 @@ export default function Landing() {
    <p>
       {'\n'}
     </p>
-    {!GetUser() ?
-    <Link href="#">
+    {!user?
+    <Link href="/join">
     <a style={linkStyle}>
  <Button
               type="submit"
@@ -102,3 +105,5 @@ export default function Landing() {
    </Grid>
   )
 }
+
+export default connect(state => state, null)(Landing);

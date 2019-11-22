@@ -8,6 +8,7 @@ export const selectFootPrint = (footprint) => async dispatch => {
     currentFP : {
       id: footprint.id,
       username: footprint.username,
+      uid: footprint.uid,
       title: footprint.title,
       travelDate: footprint.travelDate,
       country: footprint.country,
@@ -25,9 +26,11 @@ export const selectFootPrint = (footprint) => async dispatch => {
 
 export const editFootPrint = (footprint) => async dispatch => {
   const db = await fs;
+  console.log('edit:',footprint)
   let data = {
       id: footprint.id,
       username: footprint.username,
+      uid: footprint.uid,
       title: footprint.title,
       travelDate: footprint.travelDate,
       country: footprint.country,
@@ -46,7 +49,7 @@ export const editFootPrint = (footprint) => async dispatch => {
     dispatch(fetchFootPrints());
   })
   .catch((err) => {
-    console.log('update failed!')
+    console.log('update failed!', err)
     dispatch({
       type: EDIT_FP,
       error: true
@@ -68,6 +71,7 @@ export const addFootPrints = (footprint) => async dispatch => {
     dispatch(fetchFootPrints());
   })
   .catch( err => {
+    console.log(err)
     dispatch({
       type: ADD_FP,
       error: true
@@ -93,7 +97,6 @@ export const fetchFootPrints = (user) => async dispatch =>{
         let fps = doc.data();
         fps.id = id;
         newState.footprints.push(fps);
-        console.log('fetch:',fps)
       })
     dispatch({
       type: FETCH_FPS,

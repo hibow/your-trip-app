@@ -1,11 +1,10 @@
 import {SET_USER, SET_AUTH} from './type';
 import fb, {fs} from '../firebase/index';
+import Router from "next/router";
 import {
-  signInWithGoogle, signInUser, signOut, signUpUser,
+  provider, signInUser, signOut, signUpUser,
   checkAuth, reauthenticateUser, updatePassword,auth
 } from '../firebase/auth';
-// import { auth } from 'firebase';
-
 
 
 
@@ -21,33 +20,71 @@ export const SetCurAuth = (isAuth) => {
   : {type: SET_AUTH, loaded: false};
 }
 
-export const GetUser = async () => {
-  let user = auth.currentUser;
-  console.log('cur get user:', user)
- await checkAuth(user => {
+//verify authenticated user if exists then push to home page
+export const GetUser = async (user, route) => {
+  if (!user) {
+    user = auth.currentUser;
+  }
+  await checkAuth(user => {
     if (user === null) {
-    // dispatch(SetCurUser(curUser));
     return null;
   } else if (user.uid) {
-    console.log('getuser', typeof user.uid)
-    return user.uid;
-    // dispatch(SetCurUser(null));
+    return route? Router.push(route): user.uid
     }
   })
 }
+
+export const signInWithGoogle = () => async dispatch => auth.signInWithPopup(provider).then( async (result) => {
+
+  let user = auth.currentUser;
+  const db = await fs;
+    ///create user doc
+  const userRef = await db.doc(`users/${user.uid}`);
+  const snapshot = await userRef.get();
+
+  if (!snapshot.exists) {
+    const {displayName, email, photoURL} = user;
+  let userDoc = {
+    displayName: displayName,
+    email: email,
+    photoURL: photoURL,
+    createdAt: new Date(),
+  }
+  try {
+    await userRef.set(userDoc)
+    userDoc.uid = user.uid;
+    ////set current user doc to set User with uId
+    dispatch(SetCurAuth(true));
+    dispatch(SetCurUser(userDoc));
+  } catch (error) {
+    console.error('Error creating user', console.error);
+    dispatch(SetCurAuth(true));
+    dispatch(SetCurUser(null));
+  }} else {
+    dispatch(SetCurAuth(true));
+    let newUserDoc = snapshot.data();
+    newUserDoc.uid = user.uid;
+    dispatch(SetCurUser(newUserDoc));
+  }}
+  )
+.catch((err) => {
+  console.log(err, 'fail to sign in w Google!')
+  dispatch(SetCurAuth(false));
+  dispatch(SetCurUser(null));
+});
+
 export const SignInAction = (email, password) => async dispatch => {
   const db = await fs;
   await signInUser(email, password).then( async res => {
-    console.log('sign in done!', res);
     let uid = auth.currentUser.uid
-    console.log('uid:', uid)
     //get user doc with uid
     await db
     .collection('users')
     .doc(uid).get().then(doc => {
-      console.log('get doc:', doc.data())
       dispatch(SetCurAuth(true));
-      dispatch(SetCurUser(doc.data()));
+      let userDoc = doc.data();
+      userDoc.uid = uid;
+      dispatch(SetCurUser(userDoc));
     })
   })
   .catch((err) => {
@@ -58,21 +95,13 @@ export const SignInAction = (email, password) => async dispatch => {
 }
 
 export const SignUpAction = (email, displayName, password) => async dispatch => {
-  console.log('pw:', password, typeof password);
-  let userDoc = {
-    displayName: displayName,
-    email: email,
-    photoURL: '',
-    createdAt: new Date()
-  }
   const db = await fs;
   await signUpUser(email, password).then( async result => {
     let user = result.user;
-    console.log('signup user:', result.user);
     ///create user doc
     const userRef = await db.doc(`users/${user.uid}`);
     const snapshot = await userRef.get();
-    console.log(snapshot.exists)
+
     if (!snapshot.exists) {
     let userDoc = {
       displayName: displayName,
@@ -82,10 +111,10 @@ export const SignUpAction = (email, displayName, password) => async dispatch => 
     }
     try {
       await userRef.set(userDoc)
-      console.log('set it or not? when to set?')
+      userDoc.uid = user.uid;
       ////set current user doc to set User with uId
       dispatch(SetCurAuth(true));
-      dispatch(SetCurUser({...userDoc, uid:user.id}));
+      dispatch(SetCurUser(userDoc));
     } catch (error) {
       console.error('Error creating user', console.error);
       dispatch(SetCurAuth(true));
@@ -99,7 +128,7 @@ export const SignUpAction = (email, displayName, password) => async dispatch => 
 
 export const SignOutAction = () => {
   return async dispatch => {
-    await signOut().then( () => {
+    await signOut().then( (res) => {
       dispatch(SetCurUser(null));
       dispatch(SetCurAuth(false));
     });

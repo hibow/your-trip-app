@@ -7,7 +7,8 @@ export const init = {
   error: false,  //post or fetch error
   currentFP: {
     id: '',
-    username: 'Charlene',
+    username: '',
+    uid: '',
     travelDate: new Date(),
     title:'',
     city: '',

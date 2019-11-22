@@ -44,8 +44,7 @@ const FPPost= (props) =>{
   const router = useRouter();
   const classes = useStyles();
   const {currentFP} = props;
-  console.log('currFP:', currentFP)
-  console.log(router.query)
+
   ///static image -> needs to change from firestore
   const imgUrl = '../' + currentFP.urls[0][0];
   ///

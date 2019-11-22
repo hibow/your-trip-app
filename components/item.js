@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import ListItem from '@material-ui/core/ListItem';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -50,32 +49,34 @@ const useStyles = makeStyles(theme => ({
 const Item = (props) => {
   const classes = useStyles();
 
-  const {currentFP, selectFP, post, delFP} = props;
-  ////just for mock data
+  const {currentFP, selectFP, post, delFP, user} = props;
+
   const curFP = {...post};
-  // delete curFP.position;
-  // delete curFP.continent;
-  curFP.username = 'Charlene';
-  console.log('item:', curFP)
- /////
+
   const [open, setOpen] = React.useState(false);
   const [FP, setFP] = React.useState(curFP);
 
   const handleEdit = () => {
-    setOpen(true);
-    setFP(curFP)
+    if (!curFP.uid || curFP.uid !== user.uid) {
+      console.log('you can not edit!');
+    } else {
+      setOpen(true);
+      setFP(curFP)
+    }
   }
   const handleDelete = () => {
-    delFP(post.id);
+    if (!curFP.uid || curFP.uid !== user.uid) {
+      console.log('you can not delete!');
+    } else {
+      delFP(post.id);
+    }
   }
   const handleClickClose = () => {
     setOpen(false);
   }
   const handleSelect = () => {
     //send to currentFP state
-    console.log('click?')
     selectFP(curFP);
-    console.log(props)
   }
   return (
     <>

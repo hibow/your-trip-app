@@ -30,14 +30,14 @@ const useStyles = makeStyles(theme => ({
 const FormDialog = (props) => {
 
   const classes = useStyles();
-  const {state, changeClose, addFP, currentFP, editProps, editFP} = props;
-
+  const {state, changeClose, addFP, currentFP, editProps, editFP, user} = props;
   ///default add modal- move to store.js
   let defaultProps = editProps;
   if (!defaultProps) {
     defaultProps = {
       id: '',
-      username: 'Charlene',
+      uid:user.uid,
+      username: user.displayName,
       travelDate: new Date().toString(),
       title:'',
       city: '',
@@ -61,7 +61,8 @@ const FormDialog = (props) => {
 
   const handleSubmit =() => {
     let id = editProps.id;
-    let fp = {...{username: 'Charlene'},...{id, title, travelDate, urls, des, country, city}};
+    let fp = {...{uid: user.uid, username: user.displayName},...{id, title, travelDate, urls, des, country, city}};
+
     if (editProps) {
      editFP(fp);
     } else {
@@ -161,12 +162,6 @@ const FormDialog = (props) => {
   );
 };
 
-// ActBtn.propTypes = {
-//   style: PropTypes.object.isRequired,
-//   className: PropTypes.string.isRequired,
-//   name: PropTypes.string.isRequired,
-//   text: PropTypes.string.isRequired,
-// };
 const mapDispatchToProps = (dispatch) => {
   return {
     editFP: fp => dispatch(editFootPrint(fp)),

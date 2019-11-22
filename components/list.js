@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Item from './item'
@@ -13,9 +12,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const FPlist = (props)=>{
+const FPlist = ({footprints})=>{
   const classes = useStyles();
-  const {footprints} = props;
 
   return (
        <List className={classes.root}>
@@ -26,4 +24,4 @@ const FPlist = (props)=>{
   );
 }
 
-export default connect(state => state, null)(FPlist);
+export default FPlist;

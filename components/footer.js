@@ -6,12 +6,12 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="#">
         Charlene Liu
-      </Link>{' '}
-      {new Date().getFullYear()}
+      </Link>{' | MyFootPrint '}
+      { ' '+ new Date().getFullYear()}
       {'. Built with '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="#">
         Love
       </Link>
     </Typography>

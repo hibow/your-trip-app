@@ -3,45 +3,6 @@ import HorizontalTimeline from "react-horizontal-timeline";
 import data from '../db/data';
 import Typography from '@material-ui/core/Typography';
 
-
-// const EXAMPLE = [
-//   {
-//     data: "2014-03-22",
-//     status: "status",
-//     statusB: "Ready for Dev",
-//     statusE: "In Progress",
-//     country: "UK",
-//     city: 'London',
-//     photos:[
-//       "https://images.unsplash.com/photo-1519879110616-349b57f8cd11?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3150&q=80"
-//     ],
-//     title: 'tower',
-//     summary: 'nicenicenicenice!!'
-//   },
-//   {
-//     data: "2016-12-20",
-//     status: "status",
-//     statusB: "In Progress",
-//     statusE: "Done",
-//     country: "Egypt",
-//     city: 'Carlo',
-//     title: 'Pryrimid',
-//     Summary: 'it is a sunny day...'
-//   },
-//   {
-//     data: "2018-07-30",
-//     status: "status",
-//     statusB: "In Progress",
-//     statusE: "Done",
-//     country: "Italy",
-//     city: 'Rome',
-//     title: 'Colloson',
-//     Summary: 'that was wonderful..'
-//   }
-// ];
-
-//sort date
-
 export default class Timeline extends React.Component {
   constructor(props) {
     super(props);

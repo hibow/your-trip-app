@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {SignOutAction, GetUser} from '../action/authAction';
+import {SignOutAction} from '../action/authAction';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,7 +10,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import theme from '../lib/theme'
 import Link from 'next/link';
-import { borderLeft } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,65 +37,44 @@ const Header=(props) => {
   const classes = useStyles();
   const {user, signOut, loaded} = props;
 
-//it might be able to delete those function, just let it do layout and pass stuff
-  const [auth, setAuth ] = React.useState(false);
-  const handleclick=(e) => {
-    //change index page to landing page
-    console.log('click')
-    // const text = e.target.innerText;
-  }
-  const handleLogout=(e) => {
-    //change index page to landing page
-    console.log('logout')
-    // const text = e.target.innerText;
-    signOut();
+  const handleLogout = async evt => {
+    await evt.preventDefault();
+    await signOut();
   }
 
   return (
     <div className={classes.root}>
       <AppBar position="fixed" color="primary">
         <Toolbar>
-          {(!user) ?
-          <Link href = "#">
+          <Link href = "/">
             <a>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
           </a>
           </Link>
-          :
-          <Link href = "/home">
-            <a>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          </a>
-          </Link>}
           <Typography variant="h4" className={classes.title}>
-            iFootPrint
+            MyFootPrint
           </Typography>
-{/* delete this button and change to navigation component  */}
           {(!user)?
           <>
-          <Button color="inherit" onClick={handleclick}>
+          <Button color="inherit">
           <Link href="/signin">
           <a style={linkStyle}>LOGIN</a>
            </Link>
             </Button>
-          <Button color="inherit" onClick={handleLogout}>
+          <Button color="inherit">
           <Link href="/join">
-          <a style={linkStyle}>Join in</a>
+          <a style={linkStyle}>JOIN IN</a>
             </Link>
             </Button>
             </>
             :
-          <Button color="inherit" onClick={handleclick}>
+          <Button color="inherit" onClick={handleLogout}>
           <Link href="/">
           <a style={linkStyle}>LOGOUT</a>
            </Link>
           </Button>}
-
-{/* delete the above section */}
         </Toolbar>
       </AppBar>
     </div>
@@ -104,10 +82,7 @@ const Header=(props) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    // selectFP: fp => dispatch(selectFootPrint(fp)),
     signOut: () => dispatch(SignOutAction()),
-    // getUser: (user) => dispatch(GetUser(user))
   }
 };
 export default connect(state => state, mapDispatchToProps)(Header);
-// export default Header;

@@ -1,18 +1,18 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from './list';
-import Greeting from './greeting';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import AddMdl from './modal';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   fab: {
     margin: theme.spacing(1),
   },
 }));
-export default function Listcard() {
+export default function Listcard({footprints, user}) {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,13 +30,17 @@ export default function Listcard() {
         alignItems='flex-start'
         justify='space-between'
         >
-      <Greeting/>
+      <div style={{paddingTop: '20px', display:'flex', direction:'row'}}>
+        <Typography variant="h4">
+        Hello {(user.displayName? user.displayName: 'Friend')}! Drop some footprints?
+        </Typography>
+      </div>
       <Fab size = "small" color="primary" aria-label="add" className={classes.fab}>
         <AddIcon aria-label="add" type = "button" onClick={handleClickOpen}>
       </AddIcon>
       <AddMdl state= {open} changeClose = {handleClickClose}></AddMdl>
       </Fab>
-        <List/>
+        <List footprints = {footprints}/>
       </Grid>
         </div>
     );

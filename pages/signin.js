@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { signInWithGoogle } from '../firebase/auth';
+import { signInWithGoogle } from '../action/authAction';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -8,9 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Router from "next/router";
-import {SetCurUser, SignInAction, GetUser, createUserDocument, getUserDocument} from '../action/authAction';
-
-//to Do: send to fb for auth /google
+import {SignInAction, GetUser} from '../action/authAction';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,7 +18,6 @@ const useStyles = makeStyles(theme => ({
     padding: '20px',
     display: 'flex',
     flexDirection: 'column'
-    // flexWrap: 'wrap',
   },
   textDiv: {
     textAlign: 'center'
@@ -38,8 +35,7 @@ const useStyles = makeStyles(theme => ({
 const SignIn = (props) => {
 
   const classes = useStyles();
-  const {signIn, user} = props;
-  console.log('signin page: ', props)
+  const {signIn, user, SignInWGoogle} = props;
   const defaultState = {
     email: '',
     password: ''
@@ -53,16 +49,15 @@ const SignIn = (props) => {
   }
   const handleSubmit = async evt => {
     evt.preventDefault();
-    console.log('cur:',state);
-
     await signIn(state.email, state.password);
-    console.log('current user signin: ', user)
-    setState(defaultState);
-    //taking longer to verify user
-    if (GetUser()|| user) {
-      Router.push('/home');
-    }
+    await setState(defaultState);
+    await GetUser(user, '/home');
 
+  }
+  const handleGoogle = async evt => {
+    evt.preventDefault();
+    await SignInWGoogle();
+    await GetUser(user, '/home');
   }
   return (
     <Container maxWidth="sm">
@@ -94,7 +89,7 @@ const SignIn = (props) => {
   <Button variant="outlined" type="submit" color="primary" className={classes.button}>
     Sign In
   </Button>
-  <Button variant="outlined" color="primary" className={classes.button} onClick={signInWithGoogle}>
+  <Button variant="outlined" color="primary" className={classes.button} onClick={handleGoogle}>
   Sign In With Google
   </Button>
   </form>
@@ -106,6 +101,7 @@ const SignIn = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     signIn: (email, password) => dispatch(SignInAction(email, password)),
+    SignInWGoogle: () => dispatch(signInWithGoogle()),
   }
 };
 
