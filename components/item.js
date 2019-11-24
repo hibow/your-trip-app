@@ -59,6 +59,7 @@ const Item = (props) => {
   const handleEdit = () => {
     if (!curFP.uid || curFP.uid !== user.uid) {
       console.log('you can not edit!');
+      //added permission error msg
     } else {
       setOpen(true);
       setFP(curFP)
@@ -67,6 +68,7 @@ const Item = (props) => {
   const handleDelete = () => {
     if (!curFP.uid || curFP.uid !== user.uid) {
       console.log('you can not delete!');
+      //added permission error msg
     } else {
       delFP(post.id);
     }

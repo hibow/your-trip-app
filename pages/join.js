@@ -102,7 +102,7 @@ const JOIN = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signUp: (email, displayName, password) => dispatch(SignUpAction(email, displayName, password))
+    signUp: (email, displayName, password) => dispatch(SignUpAction(email, displayName, password)),
   }
 };
 

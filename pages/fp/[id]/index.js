@@ -5,17 +5,13 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
 import Box from '@material-ui/core/Box';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { flexbox } from '@material-ui/system';
+import Carousel from '../../../components/carousel';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,9 +40,9 @@ const FPPost= (props) =>{
   const router = useRouter();
   const classes = useStyles();
   const {currentFP} = props;
-
+  console.log(currentFP.urls[0])
   ///static image -> needs to change from firestore
-  const imgUrl = '../' + currentFP.urls[0][0];
+  //bug to fix: format
   ///
   return (
       <Container maxWidth="md">
@@ -86,12 +82,7 @@ const FPPost= (props) =>{
         </TableBody>
       </Table>
       <Box className = {classes.box}>
-      <CardMedia
-          component="img"
-          alt={currentFP.title}
-          image= {imgUrl}
-          title={currentFP.title}
-        />
+      <Carousel mode={'post'} urls = {currentFP.urls[0]}></Carousel>
       </Box>
     </Paper>
       </Container>

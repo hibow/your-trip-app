@@ -1,6 +1,5 @@
 import React from "react";
 import HorizontalTimeline from "react-horizontal-timeline";
-import data from '../db/data';
 import Typography from '@material-ui/core/Typography';
 
 export default class Timeline extends React.Component {

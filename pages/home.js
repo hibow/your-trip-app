@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 const Main = (props) => {
 
   const {user,footprints, loaded} = props;
+  console.log(props)
   if (!user) {
     Router.push('/');
   }
@@ -72,6 +73,7 @@ const Main = (props) => {
  }
 
  Main.getInitialProps = async ({store, isServer, pathname, query}) => {
+
   await store.dispatch(fetchFootPrints());
   return { isServer}
  };

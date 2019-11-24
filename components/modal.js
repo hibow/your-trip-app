@@ -10,7 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Datepicker from './datepicker';
 import { makeStyles } from '@material-ui/core/styles';
 import {DropzoneArea} from 'material-ui-dropzone';
-import {addFootPrints, editFootPrint} from '../action/FPAction';
+import {addFootPrints, editFootPrint, uploadFiles} from '../action/FPAction';
+import Carousel from './carousel';
 
 
 
@@ -18,19 +19,22 @@ const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
-    flexDirection:'row'
+    flexDirection:'row',
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 200,
   },
+  Modal: {
+    maxWidth:'200vw',
+  }
 }));
 
 const FormDialog = (props) => {
 
   const classes = useStyles();
-  const {state, changeClose, addFP, currentFP, editProps, editFP, user} = props;
+  const {state, changeClose, addFP, currentFP, editProps, editFP, user, uploadFILES, imgrUrl, uploadErr} = props;
   ///default add modal- move to store.js
   let defaultProps = editProps;
   if (!defaultProps) {
@@ -53,22 +57,29 @@ const FormDialog = (props) => {
   const [title, setTitle] = React.useState(defaultProps.title);
   const [des, setDes] = React.useState(defaultProps.des);
   const [urls, setUrls] = React.useState(defaultProps.urls);
-
+  const [files, setFiles] = React.useState([]);
 
   const handleClose = () => {
+    //need reset all status before close
+    console.log(editProps)
     changeClose();
   };
 
-  const handleSubmit =() => {
-    let id = editProps.id;
-    let fp = {...{uid: user.uid, username: user.displayName},...{id, title, travelDate, urls, des, country, city}};
+  const handleSubmit = async evt => {
+    evt.preventDefault();
+    let id = defaultProps.id;
+    let fp = {...{files: files, uid: user.uid, username: user.displayName},...{id, title, travelDate, urls, des, country, city}};
 
     if (editProps) {
-     editFP(fp);
+        await editFP(fp, files);
     } else {
-      addFP(fp);
+      await addFP(fp); //toDO
     }
-    changeClose();
+    // await uploadFILES(files);
+    await console.log(imgrUrl, uploadErr)
+    //upload files
+    //clear files state
+    await changeClose();
   }
   const handleSubmitDate = date => {
     //date from datepicker is always a timestamp object
@@ -84,16 +95,27 @@ const FormDialog = (props) => {
   const changeCity = evt => {
     setCity(evt.target.value)
   }
-  const changeUrls = evt => {
-    setUrls([evt.target.value])
+  const changeUrls = (curUrls) => {
+    // setUrls([evt.target.value])
+    console.log(curUrls)
+    setUrls(curUrls);
   }
   const changeDes = evt => {
     setDes(evt.target.value)
   }
+
+  const dropFiles = async files =>{
+    await setFiles(files)
+    await console.log(files) //array
+
+    //call upload function in submit
+  }
   return (
     <>
-      <Dialog open={state} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog  className={classes.Modal} open={state} onClose={handleClose} aria-labelledby="form-dialog-title">
+      {!editProps?
         <DialogTitle id="form-dialog-title">Add footprint</DialogTitle>
+        : <DialogTitle id="form-dialog-title">Edit footprint</DialogTitle>}
         <DialogContent>
           <DialogContentText>
           </DialogContentText>
@@ -127,8 +149,9 @@ const FormDialog = (props) => {
           className={classes.textField}
           margin="dense"
         />
-
+{/* image display area : delete urls field*/}
           </div>
+          <div>
           <TextField
           label="photo url"
           id="url"
@@ -137,7 +160,10 @@ const FormDialog = (props) => {
           onChange = {changeUrls}
           className={classes.textField}
           margin="dense"
-        />
+          />
+        </div>
+        { !editProps?
+        null:<Carousel mode = {'modal'} urls = {urls} deleteUrls= {changeUrls}></Carousel>}
           <TextField
             margin="dense"
             id="description"
@@ -147,7 +173,7 @@ const FormDialog = (props) => {
             onChange = {changeDes}
             fullWidth
           />
-        <DropzoneArea></DropzoneArea>
+        <DropzoneArea  onChange={dropFiles}></DropzoneArea>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -164,8 +190,9 @@ const FormDialog = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFP: fp => dispatch(editFootPrint(fp)),
+    editFP: (fp, files) => dispatch(editFootPrint(fp, files)),
     addFP: fp => dispatch(addFootPrints(fp)),
+    uploadFILES: (files) => dispatch(uploadFiles(files))
   }
 };
 

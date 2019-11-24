@@ -1,4 +1,4 @@
-import {FETCH_FPS, EDIT_FP, ADD_FP, SELECT_FP, DEL_FP} from '../action/type';
+import {FETCH_FPS, EDIT_FP, ADD_FP, SELECT_FP, DEL_FP, GET_URL, UPLOAD_ERR} from '../action/type';
 
 export const init = {
   footprints: [], //array
@@ -15,8 +15,28 @@ export const init = {
     country:'',
     des:'',
     urls:[]
-  }
+  },
+  uploadErr: null,
+  imgUrl: '',
 };
+
+export function getUploadStatus(state= init.uploadErr, action) {
+  switch(action.type) {
+    case UPLOAD_ERR: {
+    return action.uploadErr;
+   }
+  default: return state
+  }
+}
+
+export function getDownloadUrl(state= init.imgUrl, action) {
+  switch(action.type) {
+    case GET_URL: {
+      return action.imgUrl;
+    }
+    default: return state
+  }
+}
 
 export function footprintReducer(state = init.footprints, action) {
   switch(action.type) {

@@ -9,8 +9,8 @@ const SimpleMap = (props) => {
   const locations = footprints;
   const defaultProps = {
     center: {
-      lat: 51.502735,
-      lng: -0.150877
+      lat: locations[0].position.lat,
+      lng: locations[0].position.lng
     },
     zoom: 4
   };
@@ -18,7 +18,7 @@ const SimpleMap = (props) => {
     var markers = locations.map(function(location, i) {
       return new maps.Marker({
         position: location.position,
-        draggable: true,
+        // draggable: true,
         animation: maps.Animation.DROP,
         map,
         title: location.title
