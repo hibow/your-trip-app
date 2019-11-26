@@ -39,8 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 const Main = (props) => {
 
-  const {user,footprints, loaded} = props;
-  console.log(props)
+  const {user,footprints, initialState} = props;
   if (!user) {
     Router.push('/');
   }
@@ -52,7 +51,7 @@ const Main = (props) => {
       <Grid container spacing={2}>
         <Grid item md>
           <Paper className={classes.paper}>
-            <Map data = {footprints}/>
+            <Map footprints= {footprints}/>
           </Paper>
         </Grid>
         <Grid item md = {4}>
@@ -75,7 +74,7 @@ const Main = (props) => {
  Main.getInitialProps = async ({store, isServer, pathname, query}) => {
 
   await store.dispatch(fetchFootPrints());
-  return { isServer}
+  return { initialState: store.getState(), isServer}
  };
 
 const mapStateToProps = state => ({

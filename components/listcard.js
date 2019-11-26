@@ -32,7 +32,7 @@ export default function Listcard({footprints, user}) {
         >
       <div style={{paddingTop: '20px', display:'flex', direction:'row'}}>
         <Typography variant="h4">
-        Hello {(user.displayName? user.displayName: 'Friend')}! Drop some footprints?
+        Hello {(user.displayName? user.displayName: 'Friend')}! <br></br>Drop some footprints?
         </Typography>
       </div>
       <Fab size = "small" color="primary" aria-label="add" className={classes.fab}>

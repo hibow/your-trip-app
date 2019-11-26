@@ -40,10 +40,7 @@ const FPPost= (props) =>{
   const router = useRouter();
   const classes = useStyles();
   const {currentFP} = props;
-  console.log(currentFP.urls[0])
-  ///static image -> needs to change from firestore
-  //bug to fix: format
-  ///
+
   return (
       <Container maxWidth="md">
       <Paper className={classes.root}>
@@ -82,7 +79,7 @@ const FPPost= (props) =>{
         </TableBody>
       </Table>
       <Box className = {classes.box}>
-      <Carousel mode={'post'} urls = {currentFP.urls[0]}></Carousel>
+      <Carousel mode={'post'} urls = {currentFP.urls}></Carousel>
       </Box>
     </Paper>
       </Container>

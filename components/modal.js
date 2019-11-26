@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Datepicker from './datepicker';
 import { makeStyles } from '@material-ui/core/styles';
 import {DropzoneArea} from 'material-ui-dropzone';
-import {addFootPrints, editFootPrint, uploadFiles} from '../action/FPAction';
+import {changeFootPrint, deleteFiles} from '../action/FPAction';
 import Carousel from './carousel';
 
 
@@ -31,10 +31,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const convertDate = (inputFormat) => {
+  const pad = (s) => { return (s < 10) ? '0' + s : s; }
+  let d = new Date(inputFormat)
+  return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('/')
+}
+
 const FormDialog = (props) => {
 
   const classes = useStyles();
-  const {state, changeClose, addFP, currentFP, editProps, editFP, user, uploadFILES, imgrUrl, uploadErr} = props;
+  const {state, changeClose, editProps, changeFP, user,imgrUrl, uploadErr} = props;
   ///default add modal- move to store.js
   let defaultProps = editProps;
   if (!defaultProps) {
@@ -42,7 +48,7 @@ const FormDialog = (props) => {
       id: '',
       uid:user.uid,
       username: user.displayName,
-      travelDate: new Date().toString(),
+      travelDate: convertDate(new Date()),
       title:'',
       city: '',
       country:'',
@@ -58,32 +64,44 @@ const FormDialog = (props) => {
   const [des, setDes] = React.useState(defaultProps.des);
   const [urls, setUrls] = React.useState(defaultProps.urls);
   const [files, setFiles] = React.useState([]);
+  const [toBeDeleted, setDelete] = React.useState([]);
 
+  // console.log('tobedeleted:', typeof toBeDeleted, toBeDeleted)
+  const resetFields = () => {
+    setDate(defaultProps.travelDate);
+    setCountry(defaultProps.country);
+    setCity(defaultProps.city);
+    setTitle(defaultProps.setTitle);
+    setDes(defaultProps.des);
+    setUrls(defaultProps.urls);
+    setFiles([]);
+    setDelete([]);
+  }
   const handleClose = () => {
     //need reset all status before close
-    console.log(editProps)
+    resetFields();
     changeClose();
   };
 
   const handleSubmit = async evt => {
     evt.preventDefault();
     let id = defaultProps.id;
-    let fp = {...{files: files, uid: user.uid, username: user.displayName},...{id, title, travelDate, urls, des, country, city}};
-
     if (editProps) {
-        await editFP(fp, files);
+      let fp = {...{uid: user.uid, username: user.displayName},...{id, title, travelDate, urls, des, country, city}};
+      await deleteFiles(toBeDeleted);
+      await changeFP('edit', fp, files);
     } else {
-      await addFP(fp); //toDO
+      let fp = {...{uid: user.uid, username: user.displayName},...{title, travelDate, urls, des, country, city}};
+      await changeFP('add', fp, files);
     }
-    // await uploadFILES(files);
-    await console.log(imgrUrl, uploadErr)
-    //upload files
-    //clear files state
+    await resetFields();
     await changeClose();
   }
+
+
   const handleSubmitDate = date => {
     //date from datepicker is always a timestamp object
-    let dateStr = date.toString()
+    let dateStr = convertDate(date);
     setDate(dateStr);
   }
   const changeTitle = evt => {
@@ -95,10 +113,11 @@ const FormDialog = (props) => {
   const changeCity = evt => {
     setCity(evt.target.value)
   }
-  const changeUrls = (curUrls) => {
-    // setUrls([evt.target.value])
-    console.log(curUrls)
+  const changeUrls = (curUrls, tobedeletedurl) => {
     setUrls(curUrls);
+    let deleteArr = [...toBeDeleted];
+    deleteArr.push(tobedeletedurl);
+    setDelete(deleteArr);
   }
   const changeDes = evt => {
     setDes(evt.target.value)
@@ -106,9 +125,6 @@ const FormDialog = (props) => {
 
   const dropFiles = async files =>{
     await setFiles(files)
-    await console.log(files) //array
-
-    //call upload function in submit
   }
   return (
     <>
@@ -122,13 +138,12 @@ const FormDialog = (props) => {
           <Datepicker onSubmit = {handleSubmitDate} props = {travelDate}> </Datepicker>
           <TextField
           id="title"
-          label="Title"
+          label="Place Name"
           value = {title}
           onChange = {changeTitle}
-          style={{ margin: 8 }}
           placeholder="Tower Bridge"
           fullWidth
-          margin="normal"
+          margin="dense"
         />
           <div className = {classes.container}>
           <TextField
@@ -149,21 +164,6 @@ const FormDialog = (props) => {
           className={classes.textField}
           margin="dense"
         />
-{/* image display area : delete urls field*/}
-          </div>
-          <div>
-          <TextField
-          label="photo url"
-          id="url"
-          placeholder="url"
-          value = {urls}
-          onChange = {changeUrls}
-          className={classes.textField}
-          margin="dense"
-          />
-        </div>
-        { !editProps?
-        null:<Carousel mode = {'modal'} urls = {urls} deleteUrls= {changeUrls}></Carousel>}
           <TextField
             margin="dense"
             id="description"
@@ -173,6 +173,22 @@ const FormDialog = (props) => {
             onChange = {changeDes}
             fullWidth
           />
+{/* image display area : delete urls field*/}
+          </div>
+          {/* <div>
+          <TextField
+          label="photo url"
+          id="url"
+          placeholder="url"
+          value = {urls}
+          onChange = {changeUrls}
+          className={classes.textField}
+          margin="dense"
+          />
+        </div> */}
+        { !editProps?
+        null:<Carousel mode = {'modal'} urls = {urls} deleteUrls= {changeUrls}></Carousel>}
+
         <DropzoneArea  onChange={dropFiles}></DropzoneArea>
         </DialogContent>
         <DialogActions>
@@ -190,9 +206,7 @@ const FormDialog = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFP: (fp, files) => dispatch(editFootPrint(fp, files)),
-    addFP: fp => dispatch(addFootPrints(fp)),
-    uploadFILES: (files) => dispatch(uploadFiles(files))
+    changeFP: (mode, fp, files) => dispatch(changeFootPrint(mode, fp, files)),
   }
 };
 

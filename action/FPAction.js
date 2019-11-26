@@ -1,4 +1,4 @@
-import firebase, {fs, storageRef} from '../firebase/index'; //firestore
+import firebase, {fs, storageRef, storage} from '../firebase/index';
 import {auth} from '../firebase/auth';
 import {FETCH_FPS, ADD_FP, EDIT_FP, SELECT_FP, DEL_FP, UPLOAD_ERR, GET_URL} from './type';
 import forwardGeo from '../lib/forwardGeo';
@@ -14,7 +14,7 @@ export const selectFootPrint = (footprint) => async dispatch => {
       travelDate: footprint.travelDate,
       country: footprint.country,
       city: footprint.city,
-      urls: [footprint.urls],
+      urls: footprint.urls,
       des: footprint.des
     }
   }
@@ -25,143 +25,56 @@ export const selectFootPrint = (footprint) => async dispatch => {
 }
 
 
-
-export const uploadFiles = (files, footprint) => async dispatch => {
-  //deal with files
- let uri = '';
-  if (files.length) {
-    await files.forEach(async (file) => {
-      console.log('do I have first file?', file)
-      console.log(file.name)
-      let metadata = {
-        contentType: file.type
-      };
-      // console.log('image folder?', storageRef.child('images'))
-      var uploadTask = storageRef.child('images/' + footprint.uid + '/' + file.name).put(file, metadata);
-      // Listen for state changes, errors, and completion of the upload.
-      await console.log('how about here?')
-      await uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-      function(snapshot) {
-        console.log('am I here?', snapshot)
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED: // or 'paused'
-            console.log('Upload is paused');
-            break;
-          case firebase.storage.TaskState.RUNNING: // or 'running'
-            console.log('Upload is running');
-            break;
-        }
-      }, function(error) {
-
-      // A full list of error codes is available at
-      // https://firebase.google.com/docs/storage/web/handle-errors
-      switch (error.code) {
-        case 'storage/unauthorized':
-          // User doesn't have permission to access the object
-          console.log('User doesn\'t have permission to access the object')
-          break;
-
-        case 'storage/canceled':
-          // User canceled the upload
-          console.log('User canceled the upload')
-          break;
-        case 'storage/unknown':
-          console.log('Unknown error occurred, inspect error.serverResponse')
-          // Unknown error occurred, inspect error.serverResponse
-          break;
-      }
-      console.log('upload err:', error.code)
-      dispatch({
-        type: UPLOAD_ERR,
-        uploadErr: error.code
+//delete files
+export const deleteFiles = (urls) => {
+    if (urls.length) {
+      urls.forEach((url) => {
+        const desertRef = storage.refFromURL(url);
+        desertRef.delete().then(function() {
+          // console.log('delete works!')
+        }).catch(function(error) {
+          // console.log('delete error!', error)
+        });
       })
-      }, function() {
-      // Upload completed successfully, now we can get the download URL
-      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log('File available at', downloadURL);
-        dispatch({
-          type: UPLOAD_ERR,
-          uploadErr: false
-        })
-        dispatch({
-          type: GET_URL,
-          imgUrl: downloadURL
-        })
-        uri = downloadURL
-      });
-      });
-      //upload each file
-      //get status
-      //get download url
-      //update footprint document
-    })
-    console.log('upload done!')
   } else {
-    console.log('no file')
-    dispatch({
-      type: UPLOAD_ERR,
-      uploadErr: null
-    })
-    dispatch({
-      type: GET_URL,
-      imgUrl: ''
-    })
+    // console.log('no file to delete~!')
   }
 }
 
-export const editFootPrint = (footprint, files) => async dispatch => {
+export const changeFootPrint = (mode, footprint, files) => async dispatch => {
   const db = await fs;
-  console.log('edit:',footprint)
-//update urls
-let uri = '';
 if (files.length) {
   await files.forEach(async (file) => {
-    console.log('do I have first file?', file)
-    console.log(file.name)
     let metadata = {
       contentType: file.type
     };
-    // console.log('image folder?', storageRef.child('images'))
     var uploadTask = storageRef.child('images/' + footprint.uid + '/' + new Date().toString() +'_'+ file.name).put(file, metadata);
-    // Listen for state changes, errors, and completion of the upload.
-    await console.log('how about here?')
     await uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
     function(snapshot) {
-      console.log('am I here?', snapshot)
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
+      // console.log('Upload is ' + progress + '% done');
       switch (snapshot.state) {
         case firebase.storage.TaskState.PAUSED: // or 'paused'
-          console.log('Upload is paused');
+          // console.log('Upload is paused');
           break;
         case firebase.storage.TaskState.RUNNING: // or 'running'
-          console.log('Upload is running');
+          // console.log('Upload is running');
           break;
       }
     }, function(error) {
-
-    // A full list of error codes is available at
-    // https://firebase.google.com/docs/storage/web/handle-errors
     switch (error.code) {
       case 'storage/unauthorized':
-        // User doesn't have permission to access the object
-        console.log('User doesn\'t have permission to access the object')
+        // console.log('User doesn\'t have permission to access the object')
         break;
-
       case 'storage/canceled':
-        // User canceled the upload
-        console.log('User canceled the upload')
+        // console.log('User canceled the upload')
         break;
       case 'storage/unknown':
-        console.log('Unknown error occurred, inspect error.serverResponse')
-        // Unknown error occurred, inspect error.serverResponse
+        // console.log('Unknown error occurred, inspect error.serverResponse')
         break;
     }
-    console.log('upload err:', error.code)
+    // console.log('upload err:', error.code)
     dispatch({
       type: UPLOAD_ERR,
       uploadErr: error.code
@@ -169,7 +82,7 @@ if (files.length) {
     }, function() {
     // Upload completed successfully, now we can get the download URL
     uploadTask.snapshot.ref.getDownloadURL().then(async function(downloadURL) {
-      console.log('File available at', downloadURL);
+      // console.log('File available at', downloadURL);
       dispatch({
         type: UPLOAD_ERR,
         uploadErr: false
@@ -178,16 +91,13 @@ if (files.length) {
         type: GET_URL,
         imgUrl: downloadURL
       })
-      // uri = downloadURL;
-
-      console.log('upload done!', downloadURL)
+      //update urls
       if (await downloadURL) {
         await footprint.urls.push(downloadURL);
       }
-      console.log('update urls:',footprint.urls)
-    //update urls
+    //edit footprint
+    if (mode === 'edit') {
       let data = {
-          id: footprint.id,
           username: footprint.username,
           uid: footprint.uid,
           title: footprint.title,
@@ -200,7 +110,7 @@ if (files.length) {
       let id = footprint.id;
       await db.collection('footprints').doc(id).update(data)
       .then(() => {
-        console.log('update success!')
+        // console.log('update success!')
         dispatch({
           type: EDIT_FP,
           error: false
@@ -208,25 +118,38 @@ if (files.length) {
         dispatch(fetchFootPrints());
       })
       .catch((err) => {
-        console.log('update failed!', err)
+        // console.log('update failed!', err)
         dispatch({
           type: EDIT_FP,
           error: true
         })
         dispatch(fetchFootPrints());
       })
+    } else if (mode ==='add') {
+      footprint.position = await forwardGeo({q: `${footprint.title}, ${footprint.city}, ${footprint.country}`, key: env.OPENCAGE_API_KEY});
+      await db.collection('footprints').add(footprint).then(ref => {
+        // console.log('Added document with ID: ', ref.id);
+        dispatch({
+          type: ADD_FP,
+          error: false
+        });
+        dispatch(fetchFootPrints());
+      })
+      .catch( err => {
+        // console.log(err)
+        dispatch({
+          type: ADD_FP,
+          error: true
+        });
+        dispatch(fetchFootPrints());
+      })
+    }
     });
     });
-    //upload each file
-    //get status
-    //get download url
-    //update footprint document
   })
-
   } else {
-        //update urls
+      if (mode === 'edit') {
         let data = {
-          id: footprint.id,
           username: footprint.username,
           uid: footprint.uid,
           title: footprint.title,
@@ -239,7 +162,7 @@ if (files.length) {
       let id = footprint.id;
       await db.collection('footprints').doc(id).update(data)
       .then(() => {
-        console.log('update success!')
+        // console.log('update success!')
         dispatch({
           type: EDIT_FP,
           error: false
@@ -247,40 +170,35 @@ if (files.length) {
         dispatch(fetchFootPrints());
       })
       .catch((err) => {
-        console.log('update failed!', err)
+        // console.log('update failed!', err)
         dispatch({
           type: EDIT_FP,
           error: true
         })
         dispatch(fetchFootPrints());
       })
+    } else if (mode ==='add') {
+      footprint.position = await forwardGeo({q: `${footprint.title}, ${footprint.city}, ${footprint.country}`, key: env.OPENCAGE_API_KEY});
+      await db.collection('footprints').add(footprint).then(ref => {
+        // console.log('Added document with ID: ', ref.id);
+        dispatch({
+          type: ADD_FP,
+          error: false
+        });
+        dispatch(fetchFootPrints());
+      })
+      .catch( err => {
+        // console.log(err)
+        dispatch({
+          type: ADD_FP,
+          error: true
+        });
+        dispatch(fetchFootPrints());
+      })
+    }
   }
  }
 
-export const addFootPrints = (footprint) => async dispatch => {
-  const db = await fs;
-
-  footprint.position = await forwardGeo({q: `${footprint.title}, ${footprint.city}, ${footprint.country}`, key: env.OPENCAGE_API_KEY});
-  //add filestorage
-
-  await db.collection('footprints').add(footprint).then(ref => {
-    console.log('Added document with ID: ', ref.id);
-    dispatch({
-      type: ADD_FP,
-      error: false
-    });
-    dispatch(fetchFootPrints());
-  })
-  .catch( err => {
-    console.log(err)
-    dispatch({
-      type: ADD_FP,
-      error: true
-    });
-    dispatch(fetchFootPrints());
-  })
-
-}
 //async await is required here
 export const fetchFootPrints = () => async dispatch =>{
 //get current user's documents
@@ -319,7 +237,7 @@ export const deleteFootPrint = id => async dispatch => {
 
   await db.collection('footprints').doc(id).delete()
   .then( () => {
-    console.log('deleted!');
+    // console.log('deleted!');
     dispatch({
       type: DEL_FP,
       error: false
@@ -327,7 +245,7 @@ export const deleteFootPrint = id => async dispatch => {
     dispatch(fetchFootPrints());
   })
   .catch( (err) => {
-    console.log('delete failed!');
+    // console.log('delete failed!');
     dispatch({
       type: DEL_FP,
       error: true

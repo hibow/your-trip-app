@@ -43,9 +43,9 @@ export default function Carousel({mode, urls, deleteUrls}) {
 
  const handleDelete = () => {
    let cloneUrls = [...urls];
-   console.log('delete!', urls, click);
+   let toBeDeleted = urls[click];
    cloneUrls.splice(click, 1);
-   deleteUrls(cloneUrls)
+   deleteUrls(cloneUrls, toBeDeleted)
  }
   const clickRight = () => {
     if (click < maxLen - 1) {
