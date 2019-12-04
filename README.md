@@ -13,7 +13,7 @@ Build with:
 
 ## Demo
 
-
+![](static/demo1.gif)
 
 
 
