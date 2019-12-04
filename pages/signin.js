@@ -67,6 +67,7 @@ const SignIn = (props) => {
     </Typography>
     <form className={classes.signinForm} onSubmit={handleSubmit}>
     <TextField
+          required
           id="email"
           name="email"
           className={classes.textField}
@@ -76,6 +77,7 @@ const SignIn = (props) => {
           onChange={handleChange}
         />
       <TextField
+        required
         id="standard-password-input"
         name="password"
         label="password"

@@ -15,6 +15,8 @@ import Link from 'next/link';
 import AddMdl from './modal';
 import {selectFootPrint, deleteFootPrint} from '../action/FPAction';
 import Box from '@material-ui/core/Box';
+import SnackbarFunc from './snackbar';
+
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -31,13 +33,29 @@ const useStyles = makeStyles(theme => ({
   },
   cardMedia: {
     width: '15vw',
+    [theme.breakpoints.between('xs','sm')]: {
+      width: '30vw',
+    },
+  },
+  h5: {
+    [theme.breakpoints.between('xs','sm')]: {
+      fontSize: '1.1rem'
+    },
+  },
+  subtitle1: {
+    [theme.breakpoints.between('xs','sm')]: {
+      fontSize: '1rem'
+    },
   },
   button: {
     margin: theme.spacing(1),
   },
   box: {
     paddingTop: '20px',
-    overflow: 'auto'
+    overflow: 'auto',
+    [theme.breakpoints.between('xs','sm')]: {
+      height: '20vh'
+    },
   },
   icons: {
     display: 'flex',
@@ -48,18 +66,33 @@ const useStyles = makeStyles(theme => ({
 
 const Item = (props) => {
   const classes = useStyles();
-
-  const {currentFP, selectFP, post, delFP, user} = props;
-
+  const {selectFP, post, delFP, user} = props;
   const curFP = {...post};
 
   const [open, setOpen] = React.useState(false);
   const [FP, setFP] = React.useState(curFP);
 
+ ///snack bar
+ const snackState = {
+  open: false,
+  msg: 'none',
+  vertical: 'bottom',
+  horizontal: 'center'
+}
+
+  const [snackCurrent, setSnack] = React.useState(snackState);
+  const snackFunc = (newMsg) => {
+  let tempSnack = {...snackCurrent, open: true, msg:newMsg};
+    setSnack(tempSnack);
+  }
+  const closeSnack = () => {
+    setSnack(snackState)
+  }
+////
+
   const handleEdit = () => {
     if (!curFP.uid || curFP.uid !== user.uid) {
       console.log('you can not edit!');
-      //added permission error msg
     } else {
       setOpen(true);
       setFP(curFP)
@@ -68,9 +101,9 @@ const Item = (props) => {
   const handleDelete = () => {
     if (!curFP.uid || curFP.uid !== user.uid) {
       console.log('you can not delete!');
-      //added permission error msg
     } else {
       delFP(post.id);
+      snackFunc('data is deleted!')
     }
   }
   const handleClickClose = () => {
@@ -82,35 +115,35 @@ const Item = (props) => {
   }
   return (
     <>
-    <Box key = {post.title} spacing={0} className = {classes.box}>
+    <Box key = {post.id} spacing={0} className = {classes.box} >
     <Grid item >
-    <Link href="/fp/[id]" as={`/fp/${post.title}`}>
+    <Link href="/fp/[id]" as={`/fp/${post.id}`}>
       <CardActionArea
       component="a"
       onClick = {handleSelect}
       >
         <Card className={classes.card}>
-        <Hidden xsDown>
             <CardMedia
               className={classes.cardMedia}
               image={post.urls[0]}
               title= "photo"
             />
-          </Hidden>
           <div className={classes.cardDetails}>
             <CardContent>
-              <Typography component="h2" variant="h5">
+              <Typography variant="h5" className={classes.h5}>
                 {post.title}
               </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
+            <Hidden xsDown>
+              <Typography variant="subtitle1" className={classes.subtitle1} color="textSecondary">
                 {post.travelDate}
               </Typography>
-              <Typography variant="subtitle1" paragraph>
+              <Typography variant="subtitle1" className={classes.subtitle1} paragraph>
                 {post.des}
               </Typography>
-              <Typography variant="subtitle1" color="primary">
+              <Typography variant="subtitle1" className={classes.subtitle1} color="primary">
                 Continue reading...
               </Typography>
+              </Hidden>
               <div>
               </div>
             </CardContent>
@@ -128,6 +161,9 @@ const Item = (props) => {
     </IconButton>
     </Grid>
     </Box>
+    <SnackbarFunc text={snackCurrent.msg} open={snackCurrent.open}
+      vertical={snackCurrent.vertical} horizontal={snackCurrent.horizontal}
+      closeSnack={closeSnack}></SnackbarFunc>
     <AddMdl state= {open} changeClose = {handleClickClose} editProps = {FP}></AddMdl>
     </>
   )

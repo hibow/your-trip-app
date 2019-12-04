@@ -11,7 +11,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Carousel from '../../../components/carousel';
-
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,6 +32,9 @@ const useStyles = makeStyles(theme => ({
     border: '1px solid gray',
     width:'80%',
     margin: 'auto'
+  },
+  btn: {
+    marginTop: '30px'
   }
 }));
 
@@ -40,15 +43,16 @@ const FPPost= (props) =>{
   const router = useRouter();
   const classes = useStyles();
   const {currentFP} = props;
-
   return (
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
       <Paper className={classes.root}>
       <Link href="/home">
-        <button>Back</button>
+      <Button variant="outlined" color="primary" className = {classes.btn}>
+        Back
+      </Button>
       </Link>
       <Typography variant="h3" component="div" className = {classes.textDiv}>
-      {router.query.id}
+      {currentFP.title}
       </Typography>
       <Table className={classes.table}>
         <TableBody>

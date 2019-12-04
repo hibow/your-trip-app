@@ -14,11 +14,10 @@ const useStyles = makeStyles(theme => ({
 
 const FPlist = ({footprints})=>{
   const classes = useStyles();
-
   return (
        <List className={classes.root}>
-        {footprints.map((post) => (
-          <Item post = {post} key = {post.title}></Item>
+         {footprints.map((post) => (
+          <Item post = {post} key = {post.id}></Item>
             ))}
           </List>
   );

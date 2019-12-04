@@ -1,8 +1,6 @@
-import firebase from './index';
-export const auth = firebase.auth();
+import { auth , firebase} from "./index"
 
 export const provider = new firebase.auth.GoogleAuthProvider();
-
 export const signOut = () => auth.signOut();
 
 export const signInUser = (email, password) =>

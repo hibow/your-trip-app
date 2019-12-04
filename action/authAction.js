@@ -1,9 +1,9 @@
 import {SET_USER, SET_AUTH} from './type';
-import fb, {fs} from '../firebase/index';
+import {fs, auth} from '../firebase/index';
 import Router from "next/router";
 import {
   provider, signInUser, signOut, signUpUser,
-  checkAuth, reauthenticateUser, updatePassword,auth
+  checkAuth, reauthenticateUser, updatePassword
 } from '../firebase/auth';
 
 

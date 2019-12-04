@@ -11,6 +11,11 @@ const useStyles = makeStyles(theme => ({
   fab: {
     margin: theme.spacing(1),
   },
+  h4 : {
+    [theme.breakpoints.between('xs','sm')]: {
+      fontSize: '1.4rem'
+    },
+  }
 }));
 export default function Listcard({footprints, user}) {
   const [open, setOpen] = React.useState(false);
@@ -31,17 +36,17 @@ export default function Listcard({footprints, user}) {
         justify='space-between'
         >
       <div style={{paddingTop: '20px', display:'flex', direction:'row'}}>
-        <Typography variant="h4">
-        Hello {(user.displayName? user.displayName: 'Friend')}! <br></br>Drop some footprints?
+        <Typography variant="h4" className={classes.h4}>
+        Hello {(user? user.displayName: 'Friend')}! <br></br>Drop some footprints?
         </Typography>
       </div>
       <Fab size = "small" color="primary" aria-label="add" className={classes.fab}>
         <AddIcon aria-label="add" type = "button" onClick={handleClickOpen}>
       </AddIcon>
-      <AddMdl state= {open} changeClose = {handleClickClose}></AddMdl>
       </Fab>
         <List footprints = {footprints}/>
       </Grid>
+      <AddMdl state= {open} changeClose = {handleClickClose}></AddMdl>
         </div>
     );
   }

@@ -3,18 +3,22 @@ import {fetchFootPrints} from '../action/FPAction';
 import 'regenerator-runtime/runtime';
 import Map from '../components/map';
 import Listcard from '../components/listcard';
-import Timeline from '../components/timeline2';
+// import Timeline from '../components/timeline2';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Router from "next/router";
 
-
-
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: 20,
     flexGrow: 1,
+  },
+  container : {
+    [theme.breakpoints.between('xs','sm')]: {
+      flexWrap: 'nowrap',
+      flexDirection:'column-reverse'
+    },
   },
   paper: {
     padding: theme.spacing(3),
@@ -29,7 +33,11 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     maxHeight: '100%',
     overflow: 'auto',
-    maxWidth:  '50vw'
+    maxWidth:  '50vw',
+    [theme.breakpoints.between('xs','sm')]: {
+      maxWidth:  '100%',
+      maxHeight: '30vh',
+    },
   },
   section: {
     paddingTop: 5,
@@ -40,23 +48,42 @@ const useStyles = makeStyles(theme => ({
 const Main = (props) => {
 
   const {user,footprints, initialState} = props;
+  let sortedfootprints = [...footprints];
+  sortedfootprints.sort(function (a, b) {
+    return b['travelDate'].localeCompare(a['travelDate']);
+  });
   if (!user) {
     Router.push('/');
   }
+  const [renderFPS, setFPS] = React.useState(sortedfootprints);
 
+  const onMapClick = (key) => {
+  if (typeof key === 'string') {
+    let tempFPs = [...sortedfootprints];
+    let filterFPs = tempFPs.filter(e => e.id === key);
+    setFPS(filterFPs);
+    } else {
+    setFPS(sortedfootprints);
+    }
+  }
+
+  console.log('user at home:', initialState)
   const classes = useStyles();
     return (
 
      <div className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item md>
+      <Grid container spacing={2} className ={classes.container}>
+        <Grid item sm = {8} md = {8}>
           <Paper className={classes.paper}>
-            <Map footprints= {footprints}/>
+            <Map footprints= {sortedfootprints} onMapClick = {onMapClick}/>
           </Paper>
         </Grid>
-        <Grid item md = {4}>
+        <Grid item sm = {8} md = {4}>
           <Paper className={classes.listPaper} >
-            <Listcard footprints = {footprints} user= {user} />
+            {(sortedfootprints.length !== renderFPS.length && renderFPS.length !== 1)?
+            <Listcard footprints = {sortedfootprints} user= {user}/>
+             :
+             <Listcard footprints = {renderFPS} user= {user}/>}
           </Paper>
         </Grid>
       </Grid>

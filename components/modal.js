@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {DropzoneArea} from 'material-ui-dropzone';
 import {changeFootPrint, deleteFiles} from '../action/FPAction';
 import Carousel from './carousel';
-
+import SnackbarFunc from './snackbar';
 
 
 const useStyles = makeStyles(theme => ({
@@ -28,20 +28,19 @@ const useStyles = makeStyles(theme => ({
   },
   Modal: {
     maxWidth:'200vw',
-  }
+  },
 }));
 
 const convertDate = (inputFormat) => {
   const pad = (s) => { return (s < 10) ? '0' + s : s; }
   let d = new Date(inputFormat)
-  return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('/')
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 const FormDialog = (props) => {
-
   const classes = useStyles();
-  const {state, changeClose, editProps, changeFP, user,imgrUrl, uploadErr} = props;
-  ///default add modal- move to store.js
+  const {state, changeClose, editProps, changeFP, user} = props;
+
   let defaultProps = editProps;
   if (!defaultProps) {
     defaultProps = {
@@ -65,8 +64,19 @@ const FormDialog = (props) => {
   const [urls, setUrls] = React.useState(defaultProps.urls);
   const [files, setFiles] = React.useState([]);
   const [toBeDeleted, setDelete] = React.useState([]);
+  //snackbar
+  const snackState = {
+    open: false,
+    msg: 'none',
+    vertical: 'bottom',
+    horizontal: 'center'
+  }
+  const [snackCurrent, setSnack] = React.useState(snackState);
+  const snackFunc = (newMsg) => {
+    let tempSnack = {...snackCurrent, open: true, msg:newMsg};
+    setSnack(tempSnack);
+  }
 
-  // console.log('tobedeleted:', typeof toBeDeleted, toBeDeleted)
   const resetFields = () => {
     setDate(defaultProps.travelDate);
     setCountry(defaultProps.country);
@@ -91,6 +101,14 @@ const FormDialog = (props) => {
       await deleteFiles(toBeDeleted);
       await changeFP('edit', fp, files);
     } else {
+      if(!files.length) {
+        snackFunc('Please upload one picture!');
+        return;
+      }
+      if (!title || !city || !country) {
+        snackFunc('Please fill up required info');
+        return;
+      }
       let fp = {...{uid: user.uid, username: user.displayName},...{title, travelDate, urls, des, country, city}};
       await changeFP('add', fp, files);
     }
@@ -126,6 +144,10 @@ const FormDialog = (props) => {
   const dropFiles = async files =>{
     await setFiles(files)
   }
+
+  const closeSnack = () => {
+    setSnack(snackState)
+  }
   return (
     <>
       <Dialog  className={classes.Modal} open={state} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -137,6 +159,7 @@ const FormDialog = (props) => {
           </DialogContentText>
           <Datepicker onSubmit = {handleSubmitDate} props = {travelDate}> </Datepicker>
           <TextField
+          required
           id="title"
           label="Place Name"
           value = {title}
@@ -147,6 +170,7 @@ const FormDialog = (props) => {
         />
           <div className = {classes.container}>
           <TextField
+          required
           label="Country"
           id="country"
           placeholder="UK"
@@ -156,6 +180,7 @@ const FormDialog = (props) => {
           margin="dense"
         />
           <TextField
+          required
           label="City"
           id="city"
           placeholder = "London"
@@ -173,33 +198,26 @@ const FormDialog = (props) => {
             onChange = {changeDes}
             fullWidth
           />
-{/* image display area : delete urls field*/}
           </div>
-          {/* <div>
-          <TextField
-          label="photo url"
-          id="url"
-          placeholder="url"
-          value = {urls}
-          onChange = {changeUrls}
-          className={classes.textField}
-          margin="dense"
-          />
-        </div> */}
         { !editProps?
         null:<Carousel mode = {'modal'} urls = {urls} deleteUrls= {changeUrls}></Carousel>}
 
-        <DropzoneArea  onChange={dropFiles}></DropzoneArea>
+        <DropzoneArea
+        acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+        filesLimit= {1} onChange={dropFiles}></DropzoneArea>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button onClick={handleSubmit} type ="submit" color="primary">
             Save
           </Button>
         </DialogActions>
       </Dialog>
+      <SnackbarFunc text={snackCurrent.msg} open={snackCurrent.open}
+      vertical={snackCurrent.vertical} horizontal={snackCurrent.horizontal}
+      closeSnack={closeSnack}></SnackbarFunc>
     </>
   );
 };

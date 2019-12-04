@@ -70,6 +70,7 @@ const JOIN = (props) => {
           onChange={handleChange}
         />
     <TextField
+         required
          type="email"
           id="email-input"
           name="email"
@@ -80,6 +81,7 @@ const JOIN = (props) => {
           onChange={handleChange}
         />
       <TextField
+        required
         id="standard-password-input"
         name="password"
         label="password"

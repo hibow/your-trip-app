@@ -1,6 +1,6 @@
-import React from 'react';
 import {Provider} from 'react-redux';
 import withRedux from "next-redux-wrapper";
+import React from 'react';
 import initStore from "../store/index";
 
 import App, { Container } from 'next/app';

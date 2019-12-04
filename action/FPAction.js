@@ -1,5 +1,4 @@
-import firebase, {fs, storageRef, storage} from '../firebase/index';
-import {auth} from '../firebase/auth';
+import {firebase, auth, fs, storageRef, storage} from '../firebase/index';
 import {FETCH_FPS, ADD_FP, EDIT_FP, SELECT_FP, DEL_FP, UPLOAD_ERR, GET_URL} from './type';
 import forwardGeo from '../lib/forwardGeo';
 import env from '../config';
@@ -43,7 +42,7 @@ export const deleteFiles = (urls) => {
 
 export const changeFootPrint = (mode, footprint, files) => async dispatch => {
   const db = await fs;
-if (files.length) {
+  if (files.length) {
   await files.forEach(async (file) => {
     let metadata = {
       contentType: file.type
@@ -118,7 +117,6 @@ if (files.length) {
         dispatch(fetchFootPrints());
       })
       .catch((err) => {
-        // console.log('update failed!', err)
         dispatch({
           type: EDIT_FP,
           error: true
@@ -127,8 +125,8 @@ if (files.length) {
       })
     } else if (mode ==='add') {
       footprint.position = await forwardGeo({q: `${footprint.title}, ${footprint.city}, ${footprint.country}`, key: env.OPENCAGE_API_KEY});
+      console.log('geocode:', footprints.position)
       await db.collection('footprints').add(footprint).then(ref => {
-        // console.log('Added document with ID: ', ref.id);
         dispatch({
           type: ADD_FP,
           error: false
@@ -136,7 +134,6 @@ if (files.length) {
         dispatch(fetchFootPrints());
       })
       .catch( err => {
-        // console.log(err)
         dispatch({
           type: ADD_FP,
           error: true
@@ -162,7 +159,6 @@ if (files.length) {
       let id = footprint.id;
       await db.collection('footprints').doc(id).update(data)
       .then(() => {
-        // console.log('update success!')
         dispatch({
           type: EDIT_FP,
           error: false
@@ -170,7 +166,6 @@ if (files.length) {
         dispatch(fetchFootPrints());
       })
       .catch((err) => {
-        // console.log('update failed!', err)
         dispatch({
           type: EDIT_FP,
           error: true
@@ -178,9 +173,10 @@ if (files.length) {
         dispatch(fetchFootPrints());
       })
     } else if (mode ==='add') {
+      // console.log(footprint)
       footprint.position = await forwardGeo({q: `${footprint.title}, ${footprint.city}, ${footprint.country}`, key: env.OPENCAGE_API_KEY});
+      console.log('geocode:', footprint.position)
       await db.collection('footprints').add(footprint).then(ref => {
-        // console.log('Added document with ID: ', ref.id);
         dispatch({
           type: ADD_FP,
           error: false
@@ -188,7 +184,6 @@ if (files.length) {
         dispatch(fetchFootPrints());
       })
       .catch( err => {
-        // console.log(err)
         dispatch({
           type: ADD_FP,
           error: true

@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    [theme.breakpoints.between('xs','sm')]: {
+      margin: theme.spacing(0, 0),
+    },
   },
   avatar: {
     margin: theme.spacing(1),
@@ -41,6 +44,16 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  h5 : {
+    [theme.breakpoints.between('xs','sm')]: {
+      fontSize: '1.1rem'
+    },
+  },
+  h4: {
+    [theme.breakpoints.between('xs','sm')]: {
+      fontSize: '1.4rem'
+    },
+  }
 }));
 
 export const Landing = (props) => {
@@ -49,8 +62,8 @@ export const Landing = (props) => {
 
   return (
    <Grid container component="main" className={classes.root}>
-   <Grid item xs={false} sm={4} md={7} className={classes.image} />
-   <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+   <Grid item xs={6} sm={6} md={6} className={classes.image} />
+   <Grid item xs={6} sm={6} md={6} component={Paper} elevation={6} square>
    <div className={classes.paper}>
    <Grid
   container
@@ -60,13 +73,13 @@ export const Landing = (props) => {
   justify="center"
   style={{ minHeight: '100vh' }}
   >
-    <Typography component="h2" variant="h5">
+    <Typography variant="h5" className={classes.h5}>
     "Take only memories, leave only footprints." - Cheif Seattle
     </Typography>
     <p>
       {'\n'}
     </p>
-       <Typography component="h1" variant="h4">
+       <Typography variant="h4" className={classes.h4}>
 
     We are here to create more valuable memories with you.
    </Typography>

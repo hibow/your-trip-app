@@ -7,35 +7,37 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import theme from '../lib/theme'
 import Link from 'next/link';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    color: theme.palette.primary.second
-  },
   title: {
     flexGrow: 1,
     fontWeight: 450,
     textShadow: '1px',
-    color: theme.palette.primary.second
+    color: theme.palette.primary.second,
+    [theme.breakpoints.between('md','lg')]: {
+      fontSize: '2rem'
+    },
+    [theme.breakpoints.between('xs','sm')]: {
+      fontSize: '1.4rem'
+    },
   },
 }));
 
 const linkStyle = {
   marginRight: 15,
   textDecoration: 'none',
-  color: theme.palette.primary.second
+  color: theme.palette.primary.second,
 }
 
 const Header=(props) => {
   const classes = useStyles();
-  const {user, signOut, loaded} = props;
+  const {user, signOut} = props;
 
   const handleLogout = async evt => {
     await evt.preventDefault();
@@ -48,8 +50,8 @@ const Header=(props) => {
         <Toolbar>
           <Link href = "/">
             <a>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+          <IconButton edge="start" color="inherit" aria-label="landing-page">
+            <img src="./static/icon.png" width= "50" height="50"/>
           </IconButton>
           </a>
           </Link>
